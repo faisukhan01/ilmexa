@@ -1,70 +1,63 @@
 import { NextRequest, NextResponse } from 'next/server';
+import Groq from 'groq-sdk';
 
-/**
- * Automatic Speech Recognition (ASR) endpoint
- *
- * Free server-side ASR options:
- * - Google Cloud Speech-to-Text: 60 min/month free (requires billing account)
- * - OpenAI Whisper: self-hosted (free, but needs GPU)
- *
- * Current implementation: Returns a signal to use the browser's
- * built-in Web Speech API (SpeechRecognition) which is completely free,
- * works in Chrome/Edge, and requires no API key.
- *
- * To enable server-side ASR in the future, add:
- * GOOGLE_SPEECH_API_KEY=your_key in .env
- */
-
-async function googleCloudASR(audioBase64: string): Promise<string | null> {
-  const apiKey = process.env.GOOGLE_SPEECH_API_KEY;
-  if (!apiKey) return null;
-
-  const res = await fetch(
-    `https://speech.googleapis.com/v1/speech:recognize?key=${apiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        config: {
-          encoding: 'WEBM_OPUS',
-          sampleRateHertz: 48000,
-          languageCode: 'en-US',
-          model: 'latest_long',
-          enableAutomaticPunctuation: true,
-        },
-        audio: { content: audioBase64 },
-      }),
-    }
-  );
-
-  if (!res.ok) return null;
-  const data = await res.json();
-  return data.results?.[0]?.alternatives?.[0]?.transcript || null;
+function getGroqKeys(): string[] {
+  return [
+    process.env.GROQ_API_KEY,
+    process.env.GROQ_API_KEY_2,
+    process.env.GROQ_API_KEY_3,
+    process.env.GROQ_API_KEY_4,
+    process.env.GROQ_API_KEY_5,
+    process.env.GROQ_API_KEY_6,
+    process.env.GROQ_API_KEY_7,
+    process.env.GROQ_API_KEY_8,
+    process.env.GROQ_API_KEY_9,
+    process.env.GROQ_API_KEY_10,
+    process.env.GROQ_API_KEY_11,
+    process.env.GROQ_API_KEY_12,
+  ].filter((k): k is string => !!k && !k.startsWith('your_'));
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const { audio } = await req.json();
+    const formData = await req.formData();
+    const audioFile = formData.get('audio') as File | null;
 
-    if (!audio) {
-      return NextResponse.json({ error: 'Audio data is required' }, { status: 400 });
+    if (!audioFile) {
+      return NextResponse.json({ error: 'No audio provided' }, { status: 400 });
     }
 
-    // Try Google Cloud Speech-to-Text if configured
-    const transcript = await googleCloudASR(audio);
-    if (transcript) {
-      return NextResponse.json({ text: transcript });
+    const keys = getGroqKeys();
+    if (keys.length === 0) {
+      return NextResponse.json({ error: 'No Groq API keys configured' }, { status: 503 });
     }
 
-    // Fallback: tell client to use browser Web Speech API
-    return NextResponse.json({
-      useBrowserASR: true,
-      message: 'Using browser speech recognition',
-    });
+    for (const key of keys) {
+      try {
+        const groq = new Groq({ apiKey: key });
+        const transcription = await groq.audio.transcriptions.create({
+          file: audioFile,
+          model: 'whisper-large-v3-turbo',
+          language: 'en',
+          response_format: 'json',
+        });
+        const text = transcription.text?.trim();
+        if (text) {
+          return NextResponse.json({ text });
+        }
+      } catch (err) {
+        const status = (err as { status?: number })?.status;
+        if (status === 429) continue; // rate limited, try next key
+        console.warn('Groq Whisper error:', err);
+        continue;
+      }
+    }
+
+    return NextResponse.json({ error: 'Transcription failed — please try again' }, { status: 503 });
   } catch (error) {
     console.error('ASR API Error:', error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Failed to transcribe audio' },
+      { error: error instanceof Error ? error.message : 'Transcription failed' },
       { status: 500 }
     );
   }

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Brain, Sparkles, CheckCircle2, XCircle, Loader2, Trophy, RotateCcw, ChevronRight, History, Clock, HelpCircle, FileText as FileTextIcon } from 'lucide-react';
+import { Brain, Sparkles, CheckCircle2, XCircle, Loader2, Trophy, RotateCcw, ChevronRight, History, Clock, HelpCircle, FileText as FileTextIcon, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -74,6 +74,7 @@ export function QuizView() {
 
   const nextQuestion = () => {
     if (!currentQuiz) return;
+    setShowDiscardConfirm(false);
     if (currentQIndex < currentQuiz.questions.length - 1) {
       setQuiz({ currentQIndex: currentQIndex + 1, selectedAnswer: null, isSubmitted: false });
     } else {
@@ -99,6 +100,18 @@ export function QuizView() {
         }
       }).catch(() => {});
       setQuiz({ showResult: true });
+    }
+  };
+
+  const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
+
+  const discardQuiz = () => {
+    if (showDiscardConfirm) {
+      setQuiz({ currentQuiz: null, showResult: false, currentQIndex: 0, selectedAnswer: null, isSubmitted: false });
+      setShowDiscardConfirm(false);
+    } else {
+      setShowDiscardConfirm(true);
+      setTimeout(() => setShowDiscardConfirm(false), 3000);
     }
   };
 
@@ -201,76 +214,104 @@ export function QuizView() {
     const q = currentQuiz.questions[currentQIndex];
     return (
       <div className="flex flex-col h-full">
-        <div className="flex items-center justify-between px-4 py-3 border-b bg-card/50 backdrop-blur-sm">
+
+        {/* ── TOP HEADER ── */}
+        <div className="px-4 pt-3 pb-3 border-b bg-card/50 backdrop-blur-sm shrink-0 space-y-3">
+
+          {/* Row 1: icon + title + question info */}
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center shrink-0">
               <Brain className="w-4.5 h-4.5 text-rose-600 dark:text-rose-400" />
             </div>
-            <div>
-              <h2 className="font-semibold text-sm">{currentQuiz.title}</h2>
+            <div className="flex-1 min-w-0">
+              <h2 className="font-semibold text-sm truncate">{currentQuiz.title}</h2>
               <p className="text-xs text-muted-foreground">Question {currentQIndex + 1} of {total}</p>
             </div>
+            <span className="text-[11px] font-semibold text-muted-foreground shrink-0">
+              {Math.round((currentQIndex / total) * 100)}%
+            </span>
           </div>
-          <Badge variant="secondary" className="text-xs">{Math.round(((currentQIndex) / total) * 100)}% complete</Badge>
+
+          {/* Row 2: progress bar */}
+          <Progress value={(currentQIndex / total) * 100} className="h-2 rounded-full" />
+
+          {/* Row 3: Discard (left) + Submit/Next (right) — below progress */}
+          <div className="flex items-center justify-between gap-3 pt-0.5">
+            {/* Discard Quiz */}
+            <button
+              onClick={discardQuiz}
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-medium border transition-all duration-200 ${
+                showDiscardConfirm
+                  ? 'bg-rose-600 text-white border-rose-600 shadow-lg shadow-rose-500/30 scale-105'
+                  : 'bg-background text-muted-foreground border-border hover:border-rose-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30'
+              }`}
+            >
+              <X className="w-3.5 h-3.5" />
+              {showDiscardConfirm ? '⚠ Confirm discard?' : 'Discard Quiz'}
+            </button>
+
+            {/* Submit / Next */}
+            {!isSubmitted ? (
+              <Button
+                onClick={submitAnswer}
+                disabled={!selectedAnswer}
+                className="bg-rose-600 hover:bg-rose-700 rounded-xl shadow-sm px-5"
+              >
+                Submit Answer <ChevronRight className="w-4 h-4 ml-1" />
+              </Button>
+            ) : (
+              <Button
+                onClick={nextQuestion}
+                className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl font-semibold shadow-md shadow-emerald-500/30 px-5"
+              >
+                {currentQIndex < total - 1 ? 'Next Question →' : '🎉 See Results'}
+              </Button>
+            )}
+          </div>
         </div>
-        <div className="px-4"><Progress value={(currentQIndex / total) * 100} className="h-1" /></div>
+
+        {/* ── Questions scroll area ── */}
         <ScrollArea className="flex-1 p-4">
           <div className="max-w-2xl mx-auto space-y-4">
             <Card className="border-0 shadow-sm animate-fade-in-up">
               <CardContent className="p-5">
                 <h3 className="text-base font-semibold mb-4">{q.question}</h3>
                 <div className="space-y-2">
-                  {q.options.map((opt) => {
-                    let variant = 'outline' as const;
-                    if (isSubmitted) {
-                      if (opt === q.correctAnswer) variant = 'default';
-                      else if (opt === selectedAnswer && opt !== q.correctAnswer) variant = 'destructive';
-                    } else if (opt === selectedAnswer) {
-                      variant = 'default';
-                    }
-                    return (
-                      <button key={opt} onClick={() => !isSubmitted && setQuiz({ selectedAnswer: opt })}
-                        className={`w-full text-left p-3 rounded-xl border text-sm transition-all duration-200 flex items-center gap-3 ${
-                          isSubmitted && opt === q.correctAnswer ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300' :
-                          isSubmitted && opt === selectedAnswer && opt !== q.correctAnswer ? 'border-rose-500 bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-300' :
-                          !isSubmitted && opt === selectedAnswer ? 'border-primary bg-primary/5 text-primary' :
-                          'hover:bg-accent border-border'
-                        }`}>
-                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                          isSubmitted && opt === q.correctAnswer ? 'border-emerald-500 bg-emerald-500 text-white' :
-                          isSubmitted && opt === selectedAnswer ? 'border-rose-500 bg-rose-500 text-white' :
-                          opt === selectedAnswer ? 'border-primary bg-primary text-primary-foreground' :
-                          'border-muted-foreground/30'
-                        }`}>
-                          {opt === selectedAnswer || (isSubmitted && opt === q.correctAnswer) ? '✓' : ''}
-                        </div>
-                        {opt}
-                      </button>
-                    );
-                  })}
+                  {q.options.map((opt) => (
+                    <button key={opt} onClick={() => !isSubmitted && setQuiz({ selectedAnswer: opt })}
+                      className={`w-full text-left p-3 rounded-xl border text-sm transition-all duration-200 flex items-center gap-3 ${
+                        isSubmitted && opt === q.correctAnswer ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300' :
+                        isSubmitted && opt === selectedAnswer && opt !== q.correctAnswer ? 'border-rose-500 bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-300' :
+                        !isSubmitted && opt === selectedAnswer ? 'border-primary bg-primary/5 text-primary' :
+                        'hover:bg-accent border-border'
+                      }`}>
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 text-xs font-bold ${
+                        isSubmitted && opt === q.correctAnswer ? 'border-emerald-500 bg-emerald-500 text-white' :
+                        isSubmitted && opt === selectedAnswer && opt !== q.correctAnswer ? 'border-rose-500 bg-rose-500 text-white' :
+                        opt === selectedAnswer ? 'border-primary bg-primary text-primary-foreground' :
+                        'border-muted-foreground/30'
+                      }`}>
+                        {(isSubmitted && opt === q.correctAnswer) ? '✓' : opt === selectedAnswer && !isSubmitted ? '✓' : opt === selectedAnswer && isSubmitted && opt !== q.correctAnswer ? '✗' : ''}
+                      </div>
+                      {opt}
+                    </button>
+                  ))}
                 </div>
               </CardContent>
             </Card>
 
             {isSubmitted && (
               <Card className={`border-0 shadow-sm p-4 ${q.isCorrect ? 'bg-emerald-50 dark:bg-emerald-900/20' : 'bg-rose-50 dark:bg-rose-900/20'} animate-fade-in-up`}>
-                <p className={`text-sm font-medium ${q.isCorrect ? 'text-emerald-700 dark:text-emerald-300' : 'text-rose-700 dark:text-rose-300'}`}>
+                <p className={`text-sm font-semibold ${q.isCorrect ? 'text-emerald-700 dark:text-emerald-300' : 'text-rose-700 dark:text-rose-300'}`}>
                   {q.isCorrect ? '✅ Correct! Great job!' : `❌ Incorrect. The correct answer is: ${q.correctAnswer}`}
                 </p>
+                {currentQIndex < total - 1 && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Click <strong>Next →</strong> at the top to continue
+                  </p>
+                )}
               </Card>
             )}
-
-            <div className="flex justify-end gap-2">
-              {!isSubmitted ? (
-                <Button onClick={submitAnswer} disabled={!selectedAnswer} className="bg-rose-600 hover:bg-rose-700 rounded-xl">
-                  Submit Answer <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-              ) : (
-                <Button onClick={nextQuestion} className="bg-rose-600 hover:bg-rose-700 rounded-xl">
-                  {currentQIndex < total - 1 ? 'Next Question' : 'See Results'} <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-              )}
-            </div>
           </div>
         </ScrollArea>
       </div>

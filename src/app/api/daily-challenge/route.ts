@@ -50,7 +50,7 @@ async function loadChallenge(): Promise<DailyChallenge | null> {
 }
 
 async function saveChallenge(challenge: DailyChallenge): Promise<void> {
-  await fs.writeFile(CHALLENGE_FILE, JSON.stringify(challenge, null, 2), 'utf-8');
+  try { await fs.writeFile(CHALLENGE_FILE, JSON.stringify(challenge, null, 2), 'utf-8'); } catch { /* read-only on Vercel */ }
 }
 
 async function getUserAnswer(userId: string): Promise<UserAnswer | null> {
@@ -64,8 +64,10 @@ async function getUserAnswer(userId: string): Promise<UserAnswer | null> {
 }
 
 async function saveUserAnswer(userId: string, answer: UserAnswer): Promise<void> {
-  await fs.mkdir(USER_ANSWERS_DIR, { recursive: true });
-  await fs.writeFile(path.join(USER_ANSWERS_DIR, `${userId}.json`), JSON.stringify(answer, null, 2));
+  try {
+    await fs.mkdir(USER_ANSWERS_DIR, { recursive: true });
+    await fs.writeFile(path.join(USER_ANSWERS_DIR, `${userId}.json`), JSON.stringify(answer, null, 2));
+  } catch { /* read-only on Vercel */ }
 }
 
 async function generateChallenge(): Promise<DailyChallenge> {

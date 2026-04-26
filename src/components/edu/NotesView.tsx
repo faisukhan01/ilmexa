@@ -21,7 +21,20 @@ interface Note {
   updatedAt: string;
 }
 
-const noteColors = ['#ffffff', '#fef3c7', '#d1fae5', '#dbeafe', '#fce7f3', '#e0e7ff', '#f3e8ff', '#ccfbf1'];
+const noteColors = [
+  '#ffffff', // White
+  '#fef08a', // Yellow
+  '#86efac', // Green
+  '#93c5fd', // Blue
+  '#fca5a5', // Red
+  '#c4b5fd', // Purple
+  '#fdba74', // Orange
+  '#5eead4', // Teal
+  '#f0abfc', // Pink
+  '#fcd34d', // Amber
+  '#a5f3fc', // Cyan
+  '#d9f99d', // Lime
+];
 
 export function NotesView() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -203,11 +216,20 @@ export function NotesView() {
           <div className="space-y-3">
             <Input value={formTitle} onChange={(e) => setFormTitle(e.target.value)} placeholder="Note title..." className="rounded-xl font-medium" />
             <Textarea value={formContent} onChange={(e) => setFormContent(e.target.value)} placeholder="Write your note..." className="min-h-[200px] resize-none rounded-xl text-sm" />
-            <div className="flex items-center gap-2">
-              <Palette className="w-4 h-4 text-muted-foreground" />
-              <div className="flex gap-1.5">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <Palette className="w-4 h-4 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground">Note color</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
                 {noteColors.map(c => (
-                  <button key={c} onClick={() => setFormColor(c)} className={`w-6 h-6 rounded-full border-2 transition-all ${formColor === c ? 'border-primary scale-110' : 'border-transparent hover:scale-105'}`} style={{ backgroundColor: c }} />
+                  <button
+                    key={c}
+                    onClick={() => setFormColor(c)}
+                    className={`w-7 h-7 rounded-full transition-all shadow-sm ${formColor === c ? 'ring-2 ring-offset-2 ring-primary scale-110' : 'hover:scale-110 hover:shadow-md'}`}
+                    style={{ backgroundColor: c, border: c === '#ffffff' ? '1.5px solid #e5e7eb' : 'none' }}
+                    title={c}
+                  />
                 ))}
               </div>
             </div>

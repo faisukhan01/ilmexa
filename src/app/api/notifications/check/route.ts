@@ -3,8 +3,9 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 const NOTIFICATIONS_DB = path.join(process.cwd(), 'db', 'notifications.json');
-const GOALS_API = 'http://localhost:3000/api/goals';
-const ACHIEVEMENTS_API = 'http://localhost:3000/api/achievements';
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+const GOALS_API = `${BASE_URL}/api/goals`;
+const ACHIEVEMENTS_API = `${BASE_URL}/api/achievements`;
 
 interface Notification {
   id: string;
@@ -25,9 +26,11 @@ async function readDB(): Promise<Notification[]> {
 }
 
 async function writeDB(data: Notification[]): Promise<void> {
-  const dir = path.dirname(NOTIFICATIONS_DB);
-  await fs.mkdir(dir, { recursive: true });
-  await fs.writeFile(NOTIFICATIONS_DB, JSON.stringify(data, null, 2));
+  try {
+    const dir = path.dirname(NOTIFICATIONS_DB);
+    await fs.mkdir(dir, { recursive: true });
+    await fs.writeFile(NOTIFICATIONS_DB, JSON.stringify(data, null, 2));
+  } catch { /* read-only filesystem on Vercel */ }
 }
 
 export async function POST() {

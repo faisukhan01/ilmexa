@@ -28,8 +28,10 @@ async function readDB(userId: string): Promise<Notification[]> {
 }
 
 async function writeDB(userId: string, data: Notification[]): Promise<void> {
-  await fs.mkdir(DB_DIR, { recursive: true });
-  await fs.writeFile(getUserDBPath(userId), JSON.stringify(data, null, 2));
+  try {
+    await fs.mkdir(DB_DIR, { recursive: true });
+    await fs.writeFile(getUserDBPath(userId), JSON.stringify(data, null, 2));
+  } catch { /* read-only filesystem on Vercel — notifications are session-only */ }
 }
 
 export async function GET(req: NextRequest) {

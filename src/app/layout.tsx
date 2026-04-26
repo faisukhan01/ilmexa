@@ -2,6 +2,7 @@
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as SonnerToaster } from "sonner";
 import { ThemeProvider } from "next-themes";
 
 const geistSans = Geist({
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
   title: "Ilmexa AI - AI-Powered Educational Assistant",
   description: "Your comprehensive AI-powered study companion for university students. Get instant help with AI teaching, image analysis, quizzes, flashcards, and more.",
   keywords: ["Ilmexa AI", "education", "AI tutor", "university", "study assistant", "quiz", "flashcards", "AI teaching"],
-  authors: [{ name: "FSK University" }],
+  authors: [{ name: "Ilmexa by Faisal Khan" }],
   icons: {
     icon: "/fsk-logo.png",
   },
@@ -49,6 +50,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           {children}
           <Toaster />
+          <SonnerToaster position="bottom-right" richColors />
         </ThemeProvider>
       </body>
     </html>

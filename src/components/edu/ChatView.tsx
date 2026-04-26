@@ -74,6 +74,7 @@ export function ChatView() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
@@ -153,25 +154,38 @@ export function ChatView() {
     finally { isSavingRef.current = false; }
   }, [loadConversations]);
 
-  const sendMessage = async () => {
-    if ((!input.trim() && attachments.length === 0) || isLoading) return;
+  const sendMessage = async (overrideText?: string) => {
+    const textToSend = overrideText ?? input;
+    if ((!textToSend.trim() && attachments.length === 0) || isLoading) return;
     const imageUrls = attachments.filter(a => a.type === 'image').map(a => a.dataUrl);
     const docInfo = attachments.filter(a => a.type === 'document');
-    let textContent = input.trim();
-    if (docInfo.length > 0) {
-      const docTexts = docInfo.map(d => {
-        // If dataUrl is plain text (not base64), include the content directly
-        if (!d.dataUrl.startsWith('data:')) {
-          return `--- File: ${d.name} ---\n${d.dataUrl}\n--- End of ${d.name} ---`;
-        }
-        // For base64 binary files (PDF, DOCX, etc.) we can only mention them
-        return `[Attached: ${d.name} (${formatFileSize(d.size)}) — binary format, cannot be read directly. Please describe what you need help with.]`;
-      });
+    let textContent = textToSend.trim();
+
+    // Plain-text files (.txt, .csv, .md, .json) — content already read as text
+    const textDocs = docInfo.filter(d => !d.dataUrl.startsWith('data:'));
+    if (textDocs.length > 0) {
+      const docTexts = textDocs.map(d => `--- File: ${d.name} ---\n${d.dataUrl}\n--- End of ${d.name} ---`);
       textContent += (textContent ? '\n\n' : '') + docTexts.join('\n\n');
     }
+
+    // Binary docs (PDF, DOCX, DOC) — send base64 to server for text extraction
+    const binaryDocs = docInfo
+      .filter(d => d.dataUrl.startsWith('data:'))
+      .map(d => {
+        const match = d.dataUrl.match(/^data:([^;]+);base64,(.+)$/);
+        return match ? { data: match[2], mimeType: match[1], name: d.name } : null;
+      })
+      .filter((d): d is { data: string; mimeType: string; name: string } => d !== null);
+    // Show binary doc names in the user bubble
+    let displayContent = textContent;
+    if (binaryDocs.length > 0) {
+      const names = binaryDocs.map(d => `📄 ${d.name}`).join('\n');
+      displayContent = textContent ? `${textContent}\n\n${names}` : names;
+    }
+
     const userMsg: ChatMessage = {
       role: 'user',
-      content: textContent || 'Please analyze the attached image(s).',
+      content: displayContent || 'Please analyze the attached image(s).',
       id: Date.now().toString(),
       timestamp: new Date().toISOString(),
       images: imageUrls.length > 0 ? imageUrls : undefined,
@@ -206,6 +220,7 @@ export function ChatView() {
         messages: newMessages.map(m => ({ role: m.role, content: m.content })),
       };
       if (imageUrls.length > 0) body.images = imageUrls;
+      if (binaryDocs.length > 0) body.documents = binaryDocs;
       if (webSearchEnabled) body.webSearch = true;
 
       const res = await fetch('/api/chat', {
@@ -377,35 +392,85 @@ export function ChatView() {
   };
 
   const startRecording = async () => {
+    let stream: MediaStream;
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorderRef.current = mediaRecorder;
-      audioChunksRef.current = [];
-      mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
-      mediaRecorder.onstop = async () => {
-        stream.getTracks().forEach(t => t.stop());
-        const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-        const reader = new FileReader();
-        reader.onloadend = async () => {
-          const base64 = (reader.result as string).split(',')[1];
-          try {
-            const res = await fetch('/api/asr', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ audio: base64 }) });
-            const data = await res.json();
-            if (data.text) { setInput(prev => prev + (prev ? ' ' : '') + data.text); textareaRef.current?.focus(); }
-          } catch { /* silent */ }
-        };
-        reader.readAsDataURL(blob);
-      };
-      mediaRecorder.start();
-      setIsRecording(true);
-    } catch { /* silent */ }
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch {
+      alert('Microphone access denied. Please click the mic icon in your browser address bar and allow access, then try again.');
+      return;
+    }
+
+    const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+      ? 'audio/webm;codecs=opus'
+      : MediaRecorder.isTypeSupported('audio/webm')
+        ? 'audio/webm'
+        : 'audio/mp4';
+
+    const recorder = new MediaRecorder(stream, { mimeType });
+    audioChunksRef.current = [];
+    setInput('');
+    setIsRecording(true);
+
+    recorder.ondataavailable = (e) => {
+      if (e.data.size > 0) audioChunksRef.current.push(e.data);
+    };
+
+    mediaRecorderRef.current = recorder;
+    recorder.start();
   };
 
-  const stopRecording = () => {
-    if (mediaRecorderRef.current?.state === 'recording') {
-      mediaRecorderRef.current.stop();
+  const stopRecording = async (andSend = false) => {
+    const recorder = mediaRecorderRef.current;
+    if (!recorder || recorder.state === 'inactive') {
       setIsRecording(false);
+      return;
+    }
+
+    setIsRecording(false);
+    setIsTranscribing(true);
+
+    // Stop the recorder and wait for all data to be collected
+    await new Promise<void>((resolve) => {
+      recorder.onstop = () => {
+        recorder.stream.getTracks().forEach(t => t.stop());
+        resolve();
+      };
+      recorder.stop();
+    });
+    mediaRecorderRef.current = null;
+
+    try {
+      const blob = new Blob(audioChunksRef.current, { type: audioChunksRef.current[0]?.type || 'audio/webm' });
+      audioChunksRef.current = [];
+
+      if (blob.size < 1500) {
+        // Recording too short — no speech
+        setIsTranscribing(false);
+        textareaRef.current?.focus();
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('audio', blob, 'recording.webm');
+
+      const res = await fetch('/api/asr', { method: 'POST', body: formData });
+      const data = await res.json();
+      const transcript = data.text?.trim() || '';
+
+      if (transcript) {
+        setInput(transcript);
+        if (andSend) {
+          setTimeout(() => sendMessage(transcript), 50);
+        } else {
+          textareaRef.current?.focus();
+        }
+      } else {
+        textareaRef.current?.focus();
+      }
+    } catch (err) {
+      console.error('Transcription error:', err);
+    } finally {
+      setIsTranscribing(false);
     }
   };
 
@@ -735,7 +800,7 @@ export function ChatView() {
               className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
 
               {/* Avatar */}
-              <Avatar className={`w-8 h-8 mt-0.5 shrink-0 ring-2 ${msg.role === 'user' ? 'ring-emerald-500/30' : 'ring-amber-400/30'}`}>
+              <Avatar className={`w-8 h-8 shrink-0 ring-2 self-start ${msg.role === 'user' ? 'ring-emerald-500/30' : 'ring-amber-400/30 mt-5'}`}>
                 <AvatarFallback className={msg.role === 'user'
                   ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white text-[10px] font-bold'
                   : 'bg-gradient-to-br from-amber-400 to-orange-500 text-white text-[10px] font-bold'}>
@@ -745,10 +810,12 @@ export function ChatView() {
 
               <div className={`flex flex-col max-w-[82%] sm:max-w-[75%] ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
 
-                {/* Sender label */}
-                <span className="text-[10px] font-medium text-muted-foreground/60 mb-1 px-1">
-                  {msg.role === 'user' ? 'You' : 'FSK AI Teacher'}
-                </span>
+                {/* Sender label — only for assistant */}
+                {msg.role === 'assistant' && (
+                  <span className="text-[10px] font-medium text-muted-foreground/60 mb-1 px-1">
+                    Ilmexa AI Teacher
+                  </span>
+                )}
 
                 {/* Bubble */}
                 {msg.role === 'user' ? (
@@ -855,7 +922,7 @@ export function ChatView() {
                 <AvatarFallback className="bg-gradient-to-br from-amber-400 to-orange-500 text-white text-[10px] font-bold">AI</AvatarFallback>
               </Avatar>
               <div>
-                <span className="text-[10px] font-medium text-muted-foreground/60 mb-1 block px-1">FSK AI Teacher</span>
+                <span className="text-[10px] font-medium text-muted-foreground/60 mb-1 block px-1">Ilmexa AI Teacher</span>
                 <div className="bg-card border border-border/60 rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm">
                   <div className="flex items-center gap-3">
                     <div className="typing-bounce">
@@ -918,16 +985,72 @@ export function ChatView() {
         )}
       </AnimatePresence>
 
-      {/* Recording indicator */}
+      {/* Recording / Transcribing indicator */}
       <AnimatePresence>
-        {isRecording && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
-            className="absolute bottom-28 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3 px-4 py-2.5 rounded-full bg-destructive/95 text-white shadow-lg">
-            <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-            <span className="text-xs font-medium">Recording {formatRecordingTime(recordingTime)}</span>
-            <button onClick={stopRecording} className="ml-1 p-0.5 rounded-full hover:bg-white/20 transition-colors">
-              <MicOff className="w-3.5 h-3.5" />
-            </button>
+        {(isRecording || isTranscribing) && (
+          <motion.div
+            initial={{ opacity: 0, y: 16, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 16, scale: 0.96 }}
+            transition={{ type: 'spring', damping: 28, stiffness: 340 }}
+            className="absolute bottom-28 left-1/2 -translate-x-1/2 z-10 w-[min(92vw,480px)] bg-card border border-rose-300 dark:border-rose-700 rounded-2xl shadow-xl shadow-rose-500/10 overflow-hidden"
+          >
+            {/* Top bar */}
+            <div className="flex items-center gap-2.5 px-4 pt-3 pb-2">
+              {isTranscribing ? (
+                <>
+                  <Loader2 className="w-4 h-4 text-rose-500 animate-spin shrink-0" />
+                  <span className="text-xs font-semibold text-rose-600 dark:text-rose-400">Transcribing with Whisper AI…</span>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center gap-[3px] shrink-0">
+                    {[0.6, 1, 0.75, 1, 0.6].map((h, i) => (
+                      <motion.div
+                        key={i}
+                        className="w-[3px] rounded-full bg-rose-500"
+                        animate={{ scaleY: [h, 1.4, h] }}
+                        transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.1, ease: 'easeInOut' }}
+                        style={{ height: 16, transformOrigin: 'center' }}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-xs font-semibold text-rose-600 dark:text-rose-400">Recording…</span>
+                  <span className="ml-auto text-[10px] text-muted-foreground font-mono tabular-nums">
+                    {formatRecordingTime(recordingTime)}
+                  </span>
+                </>
+              )}
+            </div>
+
+            {/* Status message */}
+            <div className="px-4 pb-3 min-h-[36px]">
+              <p className="text-sm text-muted-foreground italic">
+                {isTranscribing
+                  ? 'Converting your voice to text — this takes 1–2 seconds…'
+                  : 'Speak clearly — click Stop & Send when done'}
+              </p>
+            </div>
+
+            {/* Action buttons */}
+            <div className="flex items-center gap-2 px-4 pb-3">
+              <button
+                onClick={() => stopRecording(false)}
+                disabled={isTranscribing}
+                className="flex-1 flex items-center justify-center gap-1.5 h-8 rounded-xl border border-border/60 bg-muted/50 hover:bg-muted disabled:opacity-40 text-xs font-medium text-muted-foreground hover:text-foreground transition-all"
+              >
+                <MicOff className="w-3.5 h-3.5" />
+                Stop
+              </button>
+              <button
+                onClick={() => stopRecording(true)}
+                disabled={isTranscribing}
+                className="flex-1 flex items-center justify-center gap-1.5 h-8 rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold shadow-sm shadow-rose-500/20 transition-all"
+              >
+                <Send className="w-3.5 h-3.5" />
+                Stop &amp; Send
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -982,7 +1105,7 @@ export function ChatView() {
                     >
                       {[
                         { icon: <ImageIcon className="w-4 h-4 text-sky-500" />, label: 'Image', sub: 'PNG, JPG up to 10MB', bg: 'bg-sky-100 dark:bg-sky-900/40', ref: 'image' },
-                        { icon: <FileText className="w-4 h-4 text-violet-500" />, label: 'Document', sub: 'PDF, DOCX, PPT up to 10MB', bg: 'bg-violet-100 dark:bg-violet-900/40', ref: 'doc' },
+                        { icon: <FileText className="w-4 h-4 text-violet-500" />, label: 'Document', sub: 'PDF · DOCX · TXT · CSV up to 10MB', bg: 'bg-violet-100 dark:bg-violet-900/40', ref: 'doc' },
                       ].map((item) => (
                         <button key={item.label} onClick={() => {
                           if (item.ref === 'image') fileInputRef.current?.click();
@@ -1014,10 +1137,9 @@ export function ChatView() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               onPaste={handlePaste}
-              placeholder={isRecording ? 'Listening…' : 'Ask me anything about your studies…'}
-              className="flex-1 min-h-[36px] max-h-[140px] resize-none text-sm !border-0 !shadow-none !ring-0 !outline-none focus-visible:!ring-0 focus-visible:!border-0 bg-transparent leading-relaxed py-1.5 px-1"
+              placeholder={isTranscribing ? 'Transcribing…' : isRecording ? 'Recording… speak now' : 'Ask me anything about your studies…'}
+              className={`flex-1 min-h-[36px] max-h-[140px] resize-none text-sm !border-0 !shadow-none !ring-0 !outline-none focus-visible:!ring-0 focus-visible:!border-0 bg-transparent leading-relaxed py-1.5 px-1 transition-colors ${(isRecording || isTranscribing) ? 'text-rose-600 dark:text-rose-400' : ''}`}
               rows={1}
-              disabled={isRecording}
             />
 
             {/* Right action buttons */}
@@ -1035,25 +1157,53 @@ export function ChatView() {
                   </TooltipTrigger>
                   <TooltipContent>Stop generating</TooltipContent>
                 </Tooltip>
-              ) : isRecording ? (
-                <Button variant="destructive" size="icon" className="h-8 w-8 rounded-xl animate-pulse" onMouseDown={stopRecording}>
-                  <MicOff className="w-4 h-4" />
-                </Button>
+              ) : (isRecording || isTranscribing) ? (
+                <div className="flex items-center gap-1">
+                  {isTranscribing ? (
+                    <div className="h-8 w-8 flex items-center justify-center">
+                      <Loader2 className="w-4 h-4 text-rose-500 animate-spin" />
+                    </div>
+                  ) : (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost" size="icon"
+                          className="h-8 w-8 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 animate-pulse"
+                          onClick={() => stopRecording(false)}
+                        >
+                          <MicOff className="w-4 h-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Stop recording</TooltipContent>
+                    </Tooltip>
+                  )}
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        size="icon"
+                        className="h-8 w-8 rounded-xl bg-gradient-to-br from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 shadow-sm shadow-rose-500/30 disabled:opacity-30 transition-all"
+                        disabled={isTranscribing}
+                        onClick={() => stopRecording(true)}
+                      >
+                        <Send className="w-4 h-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Stop &amp; Send</TooltipContent>
+                  </Tooltip>
+                </div>
               ) : (
                 <>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
                         variant="ghost" size="icon"
-                        className="h-8 w-8 rounded-xl text-muted-foreground hover:text-foreground hover:bg-accent"
-                        onMouseDown={startRecording}
-                        onMouseUp={stopRecording}
-                        onMouseLeave={() => { if (isRecording) stopRecording(); }}
+                        className="h-8 w-8 rounded-xl text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+                        onClick={startRecording}
                       >
                         <Mic className="w-4 h-4" />
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>Hold to record</TooltipContent>
+                    <TooltipContent>Click to speak</TooltipContent>
                   </Tooltip>
                   <Button
                     onClick={sendMessage}

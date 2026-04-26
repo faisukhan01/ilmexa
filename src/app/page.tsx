@@ -213,9 +213,9 @@ function AppSidebar({ userName }: { userName: string }) {
           <SidebarMenuItem>
             <div className="flex items-center gap-2 px-2 py-1.5 rounded-lg">
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium truncate">By Faisal Khan</p>
-                <p className="text-[10px] text-muted-foreground flex items-center gap-1">
-                  Made <Heart className="w-2.5 h-2.5 text-rose-500 fill-rose-500 inline" /> for Students
+                <p className="text-xs font-semibold truncate text-foreground/80">By Faisal Khan</p>
+                <p className="text-[10px] text-muted-foreground flex items-center gap-1 italic tracking-wide">
+                  Inspiring Every Mind <Heart className="w-2.5 h-2.5 text-rose-500 fill-rose-500 shrink-0" />
                 </p>
               </div>
               <ThemeToggle />
@@ -413,7 +413,7 @@ function MainApp({ onSignOut, userName }: { onSignOut: () => void; userName: str
                 <p className="text-sm font-semibold">{userName || 'Student'}</p>
                 <div className="flex items-center gap-1.5 mt-1">
                   <CircleDot className="w-3 h-3 text-emerald-500" />
-                  <p className="text-xs text-muted-foreground">FSK University</p>
+                  <p className="text-xs text-muted-foreground">Ilmexa by Faisal Khan</p>
                 </div>
               </div>
               <DropdownMenuSeparator />
