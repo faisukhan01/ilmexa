@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
@@ -606,7 +606,7 @@ export function ChatView() {
             <img src="/fsk-logo.png" alt="FSK EDU" className="w-full h-full object-cover" />
           </div>
           <div className="min-w-0 hidden sm:block">
-            <h2 className="font-semibold text-sm leading-tight truncate">FSK EDU AI Teacher</h2>
+            <h2 className="font-semibold text-sm leading-tight truncate">Ilmexa AI Teacher</h2>
             <div className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
               <span className="text-[10px] text-muted-foreground">Online · Ask me anything</span>
@@ -1069,7 +1069,7 @@ export function ChatView() {
           </div>
 
           <p className="text-[10px] text-muted-foreground/35 mt-2 text-center">
-            FSK EDU AI can make mistakes. Verify important information.
+            Ilmexa AI can make mistakes. Verify important information.
           </p>
         </div>
       </div>

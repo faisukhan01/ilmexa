@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { Search, Globe, ExternalLink, Loader2, BookOpen, FileText, Lightbulb, Sparkles, Brain, GraduationCap, ArrowRight } from 'lucide-react';
@@ -48,7 +48,7 @@ export function WebSearchView() {
         // Legacy: { aiSummary, results, note }
         const items: SearchResult[] = [];
         if (raw.aiSummary) {
-          items.push({ url: '#', name: `AI Research Summary`, snippet: raw.aiSummary, host_name: 'FSK EDU AI', rank: 1, date: '', favicon: '', isAiSummary: true });
+          items.push({ url: '#', name: `AI Research Summary`, snippet: raw.aiSummary, host_name: 'Ilmexa AI', rank: 1, date: '', favicon: '', isAiSummary: true });
         }
         if (Array.isArray(raw.results)) items.push(...raw.results);
         setResults(items);
@@ -240,7 +240,7 @@ export function WebSearchView() {
                                 </div>
                                 <div>
                                   <p className="text-xs font-semibold text-teal-700 dark:text-teal-300">AI Research Summary</p>
-                                  <p className="text-[10px] text-muted-foreground">Powered by FSK EDU AI</p>
+                                  <p className="text-[10px] text-muted-foreground">Powered by Ilmexa AI</p>
                                 </div>
                               </div>
                               <div className="markdown-content text-sm prose-sm max-w-none">

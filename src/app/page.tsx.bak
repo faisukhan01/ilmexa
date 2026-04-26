@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useCallback } from 'react';
 import { useAppStore, type View } from '@/lib/store';
@@ -111,7 +111,7 @@ function AppSidebar() {
                 <img src="/fsk-logo.png" alt="FSK" className="size-5 object-contain brightness-0 invert" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-bold gradient-text text-base">FSK EDU AI</span>
+                <span className="truncate font-bold gradient-text text-base">Ilmexa AI</span>
                 <span className="truncate text-xs text-muted-foreground">Study Assistant</span>
               </div>
             </SidebarMenuButton>
@@ -451,7 +451,7 @@ export default function Home() {
         <footer className="border-t border-border/50 bg-background/80 backdrop-blur-xl px-3 sm:px-4 py-1.5 sm:py-2 shrink-0 safe-bottom">
           <div className="flex items-center justify-between text-[9px] sm:text-[10px] text-muted-foreground">
             <span className="flex items-center gap-1 sm:gap-1.5">
-              <span className="font-bold text-foreground/80">FSK EDU AI</span>
+              <span className="font-bold text-foreground/80">Ilmexa AI</span>
               <span className="text-foreground/30 hidden xs:inline">|</span>
               <span className="hidden xs:inline">v8.0.0</span>
               <span className="text-foreground/30 hidden sm:inline">|</span>

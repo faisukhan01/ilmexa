@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 import { generateJSON } from '@/lib/ai';
 import { db } from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Topic is required' }, { status: 400 });
     }
 
-    const systemInstruction = `You are a quiz generator for FSK EDU AI. Generate educational multiple choice quizzes for university students. Always return valid JSON only — no markdown, no extra text.`;
+    const systemInstruction = `You are a quiz generator for Ilmexa AI. Generate educational multiple choice quizzes for university students. Always return valid JSON only — no markdown, no extra text.`;
 
     const prompt = `Generate a quiz with exactly ${numQuestions} multiple choice questions about "${topic}". Difficulty level: ${difficulty}.
 

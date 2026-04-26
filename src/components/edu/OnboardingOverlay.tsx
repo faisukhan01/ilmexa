@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -165,7 +165,7 @@ export function OnboardingOverlay() {
                   >
                     <img
                       src="/fsk-logo.png"
-                      alt="FSK EDU AI Logo"
+                      alt="Ilmexa AI Logo"
                       className="w-14 h-14 md:w-16 md:h-16 rounded-xl object-contain"
                     />
                   </motion.div>
@@ -176,7 +176,7 @@ export function OnboardingOverlay() {
                     transition={{ delay: 0.25 }}
                     className="text-2xl md:text-3xl font-bold text-white mb-3 tracking-tight"
                   >
-                    Welcome to <span className="text-emerald-300">FSK EDU AI</span>!
+                    Welcome to <span className="text-emerald-300">Ilmexa AI</span>!
                   </motion.h2>
 
                   <motion.p

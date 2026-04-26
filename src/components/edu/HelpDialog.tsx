@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import {
@@ -174,7 +174,7 @@ export function HelpDialog() {
             Keyboard Shortcuts & Help
           </DialogTitle>
           <DialogDescription>
-            Master FSK EDU AI with these keyboard shortcuts and feature tips.
+            Master Ilmexa AI with these keyboard shortcuts and feature tips.
           </DialogDescription>
         </DialogHeader>
 

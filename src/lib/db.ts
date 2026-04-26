@@ -1,17 +1,15 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaLibSql } from '@prisma/adapter-libsql'
-import { createClient } from '@libsql/client'
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
 
 function createPrismaClient() {
-  // Use Turso (libsql) in production or when TURSO_DATABASE_URL is set
-  if (process.env.TURSO_DATABASE_URL && process.env.TURSO_AUTH_TOKEN) {
-    const libsql = createClient({
-      url: process.env.TURSO_DATABASE_URL,
-      authToken: process.env.TURSO_AUTH_TOKEN,
-    })
-    const adapter = new PrismaLibSql(libsql)
+  const url = process.env.TURSO_DATABASE_URL
+  const authToken = process.env.TURSO_AUTH_TOKEN
+
+  if (url && authToken) {
+    // PrismaLibSql is a factory in v7 — pass config directly, not a pre-created client
+    const adapter = new PrismaLibSql({ url, authToken })
     return new PrismaClient({
       adapter,
       log: process.env.NODE_ENV !== 'production' ? ['query'] : [],

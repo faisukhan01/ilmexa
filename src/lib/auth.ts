@@ -1,9 +1,9 @@
-import { SignJWT, jwtVerify } from 'jose';
+﻿import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'fsk-edu-ai-super-secret-jwt-key-2024-change-in-prod'
+  process.env.JWT_SECRET || 'ilmexa-ai-super-secret-jwt-key-2024-change-in-prod'
 );
 
 const COOKIE_NAME = 'fsk-session';

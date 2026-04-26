@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -22,15 +22,15 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "FSK EDU AI - AI-Powered Educational Assistant",
+  title: "Ilmexa AI - AI-Powered Educational Assistant",
   description: "Your comprehensive AI-powered study companion for university students. Get instant help with AI teaching, image analysis, quizzes, flashcards, and more.",
-  keywords: ["FSK EDU AI", "education", "AI tutor", "university", "study assistant", "quiz", "flashcards", "AI teaching"],
+  keywords: ["Ilmexa AI", "education", "AI tutor", "university", "study assistant", "quiz", "flashcards", "AI teaching"],
   authors: [{ name: "FSK University" }],
   icons: {
     icon: "/fsk-logo.png",
   },
   openGraph: {
-    title: "FSK EDU AI - AI-Powered Educational Assistant",
+    title: "Ilmexa AI - AI-Powered Educational Assistant",
     description: "Comprehensive AI-powered study companion for 1000+ university students",
     type: "website",
   },

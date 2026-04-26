@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
@@ -543,8 +543,8 @@ function CoverPanel({ type }: CoverPanelProps) {
           className="cover-subtext text-white/65 text-xs sm:text-sm max-w-[210px] mx-auto leading-relaxed italic"
         >
           {isLogin
-            ? '— FSK EDU AI · Your intelligent study companion'
-            : '— FSK EDU AI · Start your learning journey today'}
+            ? '— Ilmexa AI · Your intelligent study companion'
+            : '— Ilmexa AI · Start your learning journey today'}
         </motion.p>
       </div>
     </div>
@@ -628,7 +628,7 @@ function LoginForm({ onToggle, onSuccess }: LoginFormProps) {
       <div className="slide-up">
         {/* Logo — centered, large */}
         <div className="flex flex-col items-center mb-5 md:mb-6">
-          <img src="/fsk-logo.png" alt="FSK EDU AI" className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain" />
+          <img src="/fsk-logo.png" alt="Ilmexa AI" className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain" />
         </div>
         <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-1 leading-tight text-center">Sign In</h2>
         <p className="text-gray-400 text-[11px] sm:text-xs md:text-sm mb-4 sm:mb-5 md:mb-6 leading-snug text-center">Welcome back! Please sign in to continue</p>
@@ -846,7 +846,7 @@ function SignupForm({ onToggle, onSuccess }: SignupFormProps) {
     <div className="bg-white flex flex-col p-4 sm:p-6 md:p-8 rounded-b-2xl md:rounded-l-2xl md:rounded-br-none md:rounded-tr-none">
       {/* Logo */}
       <div className="flex flex-col items-center mb-2">
-        <img src="/fsk-logo.png" alt="FSK EDU AI" className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 object-contain" />
+        <img src="/fsk-logo.png" alt="Ilmexa AI" className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 object-contain" />
       </div>
       <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-0.5 leading-tight text-center">Create Account</h2>
       <p className="text-gray-400 text-[10px] sm:text-xs mb-3 leading-snug text-center">Join us! Fill in your details to get started</p>

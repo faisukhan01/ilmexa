@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 import { generateVisionResponse } from '@/lib/ai';
 
-const SYSTEM_PROMPT = `You are FSK EDU AI Vision, an expert educational image analyzer. When analyzing images:
+const SYSTEM_PROMPT = `You are Ilmexa AI Vision, an expert educational image analyzer. When analyzing images:
 - If it's a diagram/chart: explain the data, trends, and implications clearly
 - If it's a formula/equation: break it down step by step, explain each variable
 - If it's a textbook page: summarize the key concepts and explain them clearly

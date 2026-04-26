@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 import { generateJSON, generateText } from '@/lib/ai';
 import { db } from '@/lib/db';
 import { getSessionFromRequest } from '@/lib/auth';
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
       // Ignore DB errors
     }
 
-    const systemInstruction = `You are an expert study planner and academic advisor for FSK EDU AI. Create comprehensive, personalized study plans for university students. Always return valid JSON only — no markdown, no extra text.`;
+    const systemInstruction = `You are an expert study planner and academic advisor for Ilmexa AI. Create comprehensive, personalized study plans for university students. Always return valid JSON only — no markdown, no extra text.`;
 
     const prompt = `Create a detailed study plan for a university student.
 

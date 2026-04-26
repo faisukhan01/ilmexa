@@ -1,5 +1,5 @@
-/**
- * Central AI client for FSK EDU AI
+﻿/**
+ * Central AI client for Ilmexa AI
  *
  * PRIMARY:  Groq API — completely free, no credit card needed
  *           Models: llama-3.3-70b-versatile (chat), llama-3.2-11b-vision-preview (vision)

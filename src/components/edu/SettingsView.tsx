@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import {
@@ -63,7 +63,7 @@ export function SettingsView() {
         </div>
         <div>
           <h2 className="font-semibold text-sm">About</h2>
-          <p className="text-xs text-muted-foreground">FSK EDU AI · v1.0.0</p>
+          <p className="text-xs text-muted-foreground">Ilmexa AI · v1.0.0</p>
         </div>
       </div>
 
@@ -92,7 +92,7 @@ export function SettingsView() {
                   <div className="relative w-28 h-28 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-[2rem] sm:rounded-[2.5rem] bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/60 dark:to-teal-950/60 border border-emerald-200/60 dark:border-emerald-700/40 flex items-center justify-center shadow-2xl shadow-emerald-500/10 overflow-hidden">
                     <img
                       src="/fsk-logo.png"
-                      alt="FSK EDU AI Logo"
+                      alt="Ilmexa AI Logo"
                       className="w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 object-contain drop-shadow-md"
                       style={{ objectPosition: 'center top' }}
                     />
@@ -100,7 +100,7 @@ export function SettingsView() {
                 </motion.div>
 
                 {/* App name + subtitle */}
-                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground tracking-tight">FSK EDU AI</h1>
+                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground tracking-tight">Ilmexa AI</h1>
                 <p className="text-xs sm:text-sm md:text-base text-muted-foreground font-medium mt-1">
                   AI-Powered Educational Assistant
                 </p>
@@ -120,7 +120,7 @@ export function SettingsView() {
 
                 {/* Description */}
                 <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-lg">
-                  FSK EDU AI is a comprehensive AI-powered study assistant designed for university students.
+                  Ilmexa AI is a comprehensive AI-powered study assistant designed for university students.
                   It leverages cutting-edge AI to provide personalized teaching, instant explanations,
                   and powerful study tools that help you learn more effectively.
                 </p>
@@ -189,7 +189,7 @@ export function SettingsView() {
                 <div className="p-3 sm:p-3.5 rounded-xl bg-muted/40 border border-border/40">
                   <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     Passionate Software Engineering student with a love for building AI-powered tools that make
-                    education more accessible and effective. FSK EDU AI was born from a simple idea — every student
+                    education more accessible and effective. Ilmexa AI was born from a simple idea — every student
                     deserves a smart study companion that actually understands them.
                   </p>
                 </div>
@@ -373,7 +373,7 @@ export function SettingsView() {
                 <p className="text-xs text-muted-foreground">
                   Built with passion by{' '}
                   <span className="font-semibold text-foreground">Faisal Arslan Khan</span>
-                  {' '}· FSK EDU AI v1.0.0
+                  {' '}· Ilmexa AI v1.0.0
                 </p>
                 <div className="flex items-center justify-center gap-2 mt-3 flex-wrap">
                   <Badge variant="secondary" className="text-[10px]">Next.js 15</Badge>

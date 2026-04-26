@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 import { generateText } from '@/lib/ai';
 
 /**
@@ -65,7 +65,7 @@ Format as clear, educational markdown. Be accurate and cite well-known sources w
         url: '#',
         name: `AI Research Summary: ${query}`,
         snippet: summary,
-        host_name: 'FSK EDU AI',
+        host_name: 'Ilmexa AI',
         rank: 1,
         date: new Date().toISOString(),
         favicon: '',

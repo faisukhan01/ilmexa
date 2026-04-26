@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 import { generateText } from '@/lib/ai';
 
-const SYSTEM_PROMPT = `You are FSK EDU AI Formula Explainer. When explaining formulas:
+const SYSTEM_PROMPT = `You are Ilmexa AI Formula Explainer. When explaining formulas:
 - Break down each variable clearly
 - Show step-by-step derivation
 - Provide a worked example with real numbers

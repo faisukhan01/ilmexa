@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 import { generateJSON } from '@/lib/ai';
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -72,7 +72,7 @@ async function generateChallenge(): Promise<DailyChallenge> {
   const subject = SUBJECTS[Math.floor(Math.random() * SUBJECTS.length)];
   const difficulty = DIFFICULTIES[Math.floor(Math.random() * DIFFICULTIES.length)];
 
-  const systemInstruction = `You are an educational quiz generator for FSK EDU AI. Create fun, quick educational challenges for university students. Always return valid JSON only — no markdown, no extra text.`;
+  const systemInstruction = `You are an educational quiz generator for Ilmexa AI. Create fun, quick educational challenges for university students. Always return valid JSON only — no markdown, no extra text.`;
 
   const prompt = `Generate a ${difficulty} difficulty educational challenge about ${subject} for university students.
 

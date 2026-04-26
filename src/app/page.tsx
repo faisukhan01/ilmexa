@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useCallback, useState } from 'react';
 import AnimatedLoginPage from '@/components/AnimatedLoginPage';
@@ -113,7 +113,7 @@ function AppSidebar({ userName }: { userName: string }) {
                 <img src="/fsk-logo.png" alt="FSK" className="size-[35px] object-contain" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-bold gradient-text text-base">FSK EDU AI</span>
+                <span className="truncate font-bold gradient-text text-base">Ilmexa AI</span>
                 <span className="truncate text-xs text-muted-foreground">Study Assistant</span>
               </div>
             </SidebarMenuButton>
@@ -460,7 +460,7 @@ function MainApp({ onSignOut, userName }: { onSignOut: () => void; userName: str
         <footer className="border-t border-border/50 bg-background/80 backdrop-blur-xl px-3 sm:px-4 py-1.5 sm:py-2 shrink-0 safe-bottom">
           <div className="flex items-center justify-between text-[9px] sm:text-[10px] text-muted-foreground">
             <span className="flex items-center gap-1 sm:gap-1.5">
-              <span className="font-bold text-foreground/80">FSK EDU AI</span>
+              <span className="font-bold text-foreground/80">Ilmexa AI</span>
               <span className="text-foreground/30 hidden xs:inline">|</span>
               <span className="hidden xs:inline">v1.0.0</span>
               <span className="text-foreground/30 hidden sm:inline">|</span>
@@ -552,7 +552,7 @@ export default function Home() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <div className="flex flex-col items-center gap-3">
-          <img src="/fsk-logo.png" alt="FSK EDU AI" className="w-16 h-16 object-contain animate-pulse" />
+          <img src="/fsk-logo.png" alt="Ilmexa AI" className="w-16 h-16 object-contain animate-pulse" />
           <p className="text-sm text-muted-foreground">Loading...</p>
         </div>
       </div>

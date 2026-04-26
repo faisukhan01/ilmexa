@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
@@ -70,7 +70,7 @@ export function NotesView() {
   const formatFullDate = (date: string) => new Date(date).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 
   const exportAsMarkdown = () => {
-    const header = `# FSK EDU AI - Study Notes\n> Exported on ${formatFullDate(new Date().toISOString())}\n\n---\n\n`;
+    const header = `# Ilmexa AI - Study Notes\n> Exported on ${formatFullDate(new Date().toISOString())}\n\n---\n\n`;
     const body = notes.map(note => {
       return `## ${note.title}\nCreated: ${formatFullDate(note.createdAt)} | Updated: ${formatFullDate(note.updatedAt)}\nColor: ${note.color}\n\n${note.content || '*No content*'}\n\n---`;
     }).join('\n\n');
