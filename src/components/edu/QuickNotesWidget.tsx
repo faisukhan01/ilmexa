@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
+import { useAppStore } from '@/lib/store';
 
 interface RecentNote {
   id: string;
@@ -33,6 +34,7 @@ function getRelativeTime(dateStr: string): string {
 const QUICK_COLORS = ['#fef08a', '#86efac', '#93c5fd', '#fca5a5', '#c4b5fd', '#fdba74', '#5eead4'];
 
 export function QuickNotesWidget() {
+  const { currentView } = useAppStore();
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [selectedColor, setSelectedColor] = useState('#fef08a');
@@ -50,6 +52,9 @@ export function QuickNotesWidget() {
   useEffect(() => {
     if (isOpen) loadRecentNotes();
   }, [isOpen, loadRecentNotes]);
+
+  // Hide the widget on the chat view — the FAB overlaps the send button
+  if (currentView === 'chat') return null;
 
   const saveNote = async () => {
     if (!input.trim() || isSaving) return;
