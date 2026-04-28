@@ -10,14 +10,13 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import ReactMarkdown from 'react-markdown';
+import { MarkdownWithMath } from '@/components/ui/markdown-with-math';
 import { speakWithFallback, stopBrowserSpeak } from '@/lib/tts';
 import { useAppStore } from '@/lib/store';
 import type { SolverProblemType } from '@/lib/store';
@@ -242,13 +241,18 @@ export function MathSolverView() {
                 <label className="text-sm font-medium text-muted-foreground">
                   Enter your problem
                 </label>
-                <Textarea
-                  value={question}
-                  onChange={(e) => setSolver({ question: e.target.value })}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Type your math problem, code question, or any academic question here..."
-                  className="min-h-[120px] text-sm rounded-xl border-primary/20 focus:border-primary/50 resize-y"
-                />
+                <div
+                  className="relative rounded-xl border border-input focus-within:ring-2 focus-within:ring-ring overflow-hidden"
+                  style={{ height: '120px' }}
+                >
+                  <textarea
+                    value={question}
+                    onChange={(e) => setSolver({ question: e.target.value })}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Type your math problem, code question, or any academic question here..."
+                    className="w-full h-full resize-none bg-background text-sm px-3 py-2.5 outline-none overflow-y-auto"
+                  />
+                </div>
               </div>
 
               {/* Type Selector */}
@@ -408,7 +412,7 @@ export function MathSolverView() {
                       {/* Solution Content */}
                       <ScrollArea className="max-h-[500px]">
                         <div className="markdown-content text-sm leading-relaxed pr-3">
-                          <ReactMarkdown>{solution}</ReactMarkdown>
+                          <MarkdownWithMath>{solution}</MarkdownWithMath>
                         </div>
                       </ScrollArea>
                     </CardContent>

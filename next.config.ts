@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   reactStrictMode: false,
-  serverExternalPackages: ['pdf-parse', 'mammoth'],
+  serverExternalPackages: ['pdf-parse', 'mammoth', 'jszip'],
 };
 
 export default nextConfig;

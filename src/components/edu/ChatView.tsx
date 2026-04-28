@@ -86,6 +86,7 @@ export function ChatView() {
   const [showHistory, setShowHistory] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
+  const lastAIMessageRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const docInputRef = useRef<HTMLInputElement>(null);
@@ -102,7 +103,19 @@ export function ChatView() {
     }, 50);
   }, []);
 
-  useEffect(() => { scrollToBottom(); }, [messages, scrollToBottom]);
+  useEffect(() => {
+    if (messages.length === 0) return;
+    const lastMsg = messages[messages.length - 1];
+    if (lastMsg.role === 'user') {
+      // User just sent — scroll to bottom so they see the loading indicator
+      scrollToBottom();
+    } else {
+      // AI replied — scroll to the TOP of the new message so they read from the start
+      setTimeout(() => {
+        lastAIMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }
+  }, [messages, scrollToBottom]);
 
   const loadConversations = useCallback(async () => {
     try {
@@ -794,8 +807,11 @@ export function ChatView() {
           )}
 
           {/* Message list */}
-          {messages.map((msg) => (
-            <motion.div key={msg.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+          {messages.map((msg, index) => (
+            <motion.div
+              key={msg.id}
+              ref={msg.role === 'assistant' && index === messages.length - 1 ? lastAIMessageRef : null}
+              initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.25 }}
               className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
 
@@ -808,7 +824,7 @@ export function ChatView() {
                 </AvatarFallback>
               </Avatar>
 
-              <div className={`flex flex-col max-w-[82%] sm:max-w-[75%] ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
+              <div className={`flex flex-col max-w-[82%] sm:max-w-[75%] min-w-0 ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
 
                 {/* Sender label — only for assistant */}
                 {msg.role === 'assistant' && (
@@ -819,7 +835,7 @@ export function ChatView() {
 
                 {/* Bubble */}
                 {msg.role === 'user' ? (
-                  <div className="bg-gradient-to-br from-emerald-600 to-teal-600 text-white rounded-2xl rounded-br-sm px-4 py-2.5 shadow-md shadow-emerald-500/20">
+                  <div className="bg-gradient-to-br from-emerald-600 to-teal-600 text-white rounded-2xl rounded-br-sm px-4 py-2.5 shadow-md shadow-emerald-500/20 min-w-0 max-w-full overflow-hidden">
                     {msg.images && msg.images.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-2">
                         {msg.images.map((img, i) => (
@@ -830,7 +846,7 @@ export function ChatView() {
                     <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{msg.content}</p>
                   </div>
                 ) : (
-                  <div className="bg-card border border-border/60 rounded-2xl rounded-bl-sm overflow-hidden shadow-sm">
+                  <div className="bg-card border border-border/60 rounded-2xl rounded-bl-sm overflow-hidden shadow-sm min-w-0 max-w-full">
                     <div className="px-4 py-3 text-sm">
                       {msg.images && msg.images.length > 0 && (
                         <div className="flex flex-wrap gap-2 mb-3">
@@ -839,16 +855,16 @@ export function ChatView() {
                           ))}
                         </div>
                       )}
-                      <div className="markdown-content prose prose-sm dark:prose-invert max-w-none
+                      <div className="markdown-content prose prose-sm dark:prose-invert max-w-none min-w-0 overflow-hidden
                         [&>*:first-child]:mt-0 [&>*:last-child]:mb-0
-                        prose-p:my-1.5 prose-p:leading-relaxed
-                        prose-headings:font-semibold prose-headings:mt-3 prose-headings:mb-1.5
-                        prose-ul:my-1.5 prose-ol:my-1.5 prose-li:my-0.5
-                        prose-code:text-emerald-600 dark:prose-code:text-emerald-400 prose-code:bg-emerald-50 dark:prose-code:bg-emerald-950/40 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-xs prose-code:font-mono
-                        prose-pre:bg-muted/80 prose-pre:rounded-xl prose-pre:text-xs prose-pre:my-2 prose-pre:border prose-pre:border-border/50
-                        prose-blockquote:border-l-emerald-400 prose-blockquote:text-muted-foreground prose-blockquote:my-2 prose-blockquote:bg-muted/30 prose-blockquote:rounded-r-lg prose-blockquote:py-1
-                        prose-strong:text-foreground prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-a:no-underline hover:prose-a:underline
-                        prose-hr:border-border/50">
+                        prose-p:my-1.5 prose-p:leading-relaxed prose-p:break-words
+                        prose-headings:font-semibold prose-headings:mt-3 prose-headings:mb-1.5 prose-headings:break-words
+                        prose-ul:my-1.5 prose-ol:my-1.5 prose-li:my-0.5 prose-li:break-words
+                        prose-code:text-emerald-600 dark:prose-code:text-emerald-400 prose-code:bg-emerald-50 dark:prose-code:bg-emerald-950/40 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-xs prose-code:font-mono prose-code:break-all
+                        prose-pre:bg-muted/80 prose-pre:rounded-xl prose-pre:text-xs prose-pre:my-2 prose-pre:border prose-pre:border-border/50 prose-pre:overflow-x-auto prose-pre:max-w-full
+                        prose-blockquote:border-l-emerald-400 prose-blockquote:text-muted-foreground prose-blockquote:my-2 prose-blockquote:bg-muted/30 prose-blockquote:rounded-r-lg prose-blockquote:py-1 prose-blockquote:break-words
+                        prose-strong:text-foreground prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-a:no-underline hover:prose-a:underline prose-a:break-all
+                        prose-hr:border-border/50 prose-table:overflow-x-auto prose-table:block prose-table:max-w-full">
                         <ReactMarkdown>{msg.content}</ReactMarkdown>
                       </div>
                     </div>
@@ -1138,12 +1154,12 @@ export function ChatView() {
               onKeyDown={handleKeyDown}
               onPaste={handlePaste}
               placeholder={isTranscribing ? 'Transcribing…' : isRecording ? 'Recording… speak now' : 'Ask me anything about your studies…'}
-              className={`flex-1 min-h-[36px] max-h-[140px] resize-none text-sm !border-0 !shadow-none !ring-0 !outline-none focus-visible:!ring-0 focus-visible:!border-0 bg-transparent leading-relaxed py-1.5 px-1 transition-colors ${(isRecording || isTranscribing) ? 'text-rose-600 dark:text-rose-400' : ''}`}
+              className={`flex-1 min-h-[36px] max-h-[140px] resize-none text-sm !border-0 !shadow-none !ring-0 !outline-none focus-visible:!ring-0 focus-visible:!border-0 bg-transparent leading-relaxed py-1.5 px-1 transition-colors overflow-y-auto ${(isRecording || isTranscribing) ? 'text-rose-600 dark:text-rose-400' : ''}`}
               rows={1}
             />
 
             {/* Right action buttons */}
-            <div className="flex items-center gap-1 shrink-0">
+            <div className="flex items-center gap-1 shrink-0 relative z-10">
               {isLoading ? (
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -1205,14 +1221,15 @@ export function ChatView() {
                     </TooltipTrigger>
                     <TooltipContent>Click to speak</TooltipContent>
                   </Tooltip>
-                  <Button
-                    onClick={sendMessage}
+                  <button
+                    type="button"
+                    onPointerDown={(e) => { e.preventDefault(); if (canSend) sendMessage(); }}
                     disabled={!canSend}
-                    size="icon"
-                    className="h-8 w-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 shadow-sm shadow-emerald-500/30 disabled:opacity-30 transition-all"
+                    aria-label="Send message"
+                    className="relative z-10 h-9 w-9 sm:h-8 sm:w-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 shadow-sm shadow-emerald-500/30 disabled:opacity-30 transition-all flex items-center justify-center shrink-0 touch-manipulation cursor-pointer disabled:cursor-not-allowed"
                   >
-                    <ArrowUp className="w-4 h-4" />
-                  </Button>
+                    <ArrowUp className="w-4 h-4 text-white pointer-events-none" />
+                  </button>
                 </>
               )}
             </div>

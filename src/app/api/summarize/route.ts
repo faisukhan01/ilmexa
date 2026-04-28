@@ -3,13 +3,13 @@ import { generateText } from '@/lib/ai';
 import { db } from '@/lib/db';
 import { getSessionFromRequest } from '@/lib/auth';
 
-const SYSTEM_PROMPT = `You are an expert academic summarizer for university students. Summarize the following text in a clear, structured way. Your goal is to help students quickly understand the key concepts and main ideas from their study materials. Always be accurate and preserve the most important information.`;
+const SYSTEM_PROMPT = `You are Ilmexa AI Summarizer for university students. Your job is to make study material easy to understand quickly. Always use clear, simple language — explain things like a helpful friend, not a textbook. Capture the key ideas accurately without unnecessary complexity.`;
 
 const STYLE_INSTRUCTIONS: Record<string, string> = {
-  brief: 'Provide a concise, brief summary that captures the main idea in 2-3 short paragraphs. Focus only on the most critical points.',
-  detailed: 'Provide a comprehensive summary that covers all major points, key arguments, supporting evidence, and important nuances. Use clear section headers.',
-  'bullet-points': 'Summarize the text using well-organized bullet points. Group related points under subheadings. Keep each bullet concise but informative.',
-  eli5: 'Explain the text as if the reader is 5 years old. Use simple language, fun analogies, and relatable examples. Avoid jargon entirely. Be engaging and easy to understand.',
+  brief: 'Write a short, clear summary in 2-3 paragraphs. Cover only the most important points. Use simple sentences.',
+  detailed: 'Write a thorough summary covering all key points, main arguments, and important details. Use section headers to organize it. Keep the language clear and accessible.',
+  'bullet-points': 'Summarize using clear bullet points grouped under short headings. Each bullet should be a single clear idea. Easy to scan and study from.',
+  eli5: 'Explain it like the reader has never heard of this topic before. Use everyday language, simple analogies, and relatable examples. No jargon at all. Make it fun and easy.',
 };
 
 export async function POST(req: NextRequest) {

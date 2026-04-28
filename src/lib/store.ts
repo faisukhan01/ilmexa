@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
-export type View = 'dashboard' | 'chat' | 'quiz' | 'flashcards' | 'notes' | 'pomodoro' | 'websearch' | 'courses' | 'statistics' | 'explain' | 'goals' | 'studyplan' | 'summarizer' | 'streak' | 'mood' | 'solver' | 'achievements' | 'settings';
+export type View = 'dashboard' | 'chat' | 'quiz' | 'courses' | 'pomodoro' | 'websearch' | 'explain' | 'goals' | 'studyplan' | 'summarizer' | 'streak' | 'solver' | 'achievements' | 'settings';
 
 export type NotificationType = 'achievement' | 'goal' | 'study' | 'reminder';
 
@@ -52,6 +52,7 @@ export interface QuizQuestion {
   correctAnswer: string;
   userAnswer?: string;
   isCorrect?: boolean;
+  qaFeedback?: string;
 }
 export interface QuizData {
   id: string;
@@ -60,13 +61,17 @@ export interface QuizData {
   score?: number | null;
   totalQuestions: number;
 }
+export type QuizMode = 'mcq' | 'qa';
 export interface QuizState {
   topic: string;
   numQuestions: string;
   difficulty: string;
+  quizMode: QuizMode;
   currentQuiz: QuizData | null;
   currentQIndex: number;
   selectedAnswer: string | null;
+  typedAnswer: string;
+  showAnswer: boolean;
   showResult: boolean;
   isSubmitted: boolean;
 }
@@ -150,7 +155,7 @@ export const useAppStore = create<AppState>()(
       summarizer: { text: '', selectedStyle: 'brief', summary: '', originalWordCount: 0, summaryWordCount: 0, reduction: 0 },
       setSummarizer: (partial) => set((s) => ({ summarizer: { ...s.summarizer, ...partial } })),
       // Quiz
-      quiz: { topic: '', numQuestions: '5', difficulty: 'medium', currentQuiz: null, currentQIndex: 0, selectedAnswer: null, showResult: false, isSubmitted: false },
+      quiz: { topic: '', numQuestions: '5', difficulty: 'medium', quizMode: 'mcq', currentQuiz: null, currentQIndex: 0, selectedAnswer: null, typedAnswer: '', showAnswer: false, showResult: false, isSubmitted: false },
       setQuiz: (partial) => set((s) => ({ quiz: { ...s.quiz, ...partial } })),
       toasts: [],
       addToast: (toast) => set((state) => ({

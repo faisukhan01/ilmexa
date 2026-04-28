@@ -215,13 +215,18 @@ export function SummarizerView() {
                     {currentWordCount} word{currentWordCount !== 1 ? 's' : ''}
                   </span>
                 </div>
-                <Textarea
-                  value={text}
-                  onChange={(e) => setSummarizer({ text: e.target.value })}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Paste lecture notes, articles, textbook excerpts, or any text you'd like summarized..."
-                  className="min-h-[160px] text-sm rounded-xl border-primary/20 focus:border-primary/50 resize-y"
-                />
+                <div
+                  className="relative rounded-xl border border-input focus-within:ring-2 focus-within:ring-ring overflow-hidden"
+                  style={{ height: '160px' }}
+                >
+                  <textarea
+                    value={text}
+                    onChange={(e) => setSummarizer({ text: e.target.value })}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Paste lecture notes, articles, textbook excerpts, or any text you'd like summarized..."
+                    className="w-full h-full resize-none bg-background text-sm px-3 py-2.5 outline-none overflow-y-auto"
+                  />
+                </div>
               </div>
 
               {/* Style Selector */}

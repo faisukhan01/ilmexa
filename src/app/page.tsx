@@ -11,19 +11,16 @@ import {
 import { DashboardView } from '@/components/edu/DashboardView';
 import { ChatView } from '@/components/edu/ChatView';
 import { QuizView } from '@/components/edu/QuizView';
-import { FlashcardsView } from '@/components/edu/FlashcardsView';
 import { NotesView } from '@/components/edu/NotesView';
 import { PomodoroView } from '@/components/edu/PomodoroView';
 import { WebSearchView } from '@/components/edu/WebSearchView';
 import { CoursesView } from '@/components/edu/CoursesView';
-import { StatisticsView } from '@/components/edu/StatisticsView';
 import { FormulaExplainerView } from '@/components/edu/FormulaExplainerView';
 import { SettingsView } from '@/components/edu/SettingsView';
 import { GoalsView } from '@/components/edu/GoalsView';
 import { StudyPlanView } from '@/components/edu/StudyPlanView';
 import { SummarizerView } from '@/components/edu/SummarizerView';
-import { StreakView } from '@/components/edu/StreakView';
-import { MoodTrackerView } from '@/components/edu/MoodTrackerView';
+import { ExamTrackerView } from '@/components/edu/ExamTrackerView';
 import { MathSolverView } from '@/components/edu/MathSolverView';
 import { AchievementsView } from '@/components/edu/AchievementsView';
 import { OnboardingOverlay } from '@/components/edu/OnboardingOverlay';
@@ -35,7 +32,7 @@ import {
   LayoutDashboard, MessageSquare, Brain, BookOpen,
   FileText, Timer, Search, Settings, Moon, Sun,
   Library, HelpCircle, CircleDot, BarChart3, Sigma, Target, CalendarDays,
-  FileSearch, Flame, Heart, Calculator, Trophy
+  FileSearch, GraduationCap, Heart, Calculator, Trophy
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
@@ -56,22 +53,18 @@ const navItems: { id: View; label: string; icon: React.ElementType; color: strin
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'text-emerald-500' },
   { id: 'chat', label: 'AI Teacher', icon: MessageSquare, color: 'text-emerald-500', badge: 'AI' },
   { id: 'explain', label: 'AI Explainer', icon: Sigma, color: 'text-teal-500' },
-  { id: 'solver', label: 'AI Solver', icon: Calculator, color: 'text-violet-500', badge: 'New' },
-  { id: 'summarizer', label: 'AI Summarizer', icon: FileSearch, color: 'text-cyan-500', badge: 'New' },
-  // Study (5-11)
+  { id: 'solver', label: 'AI Solver', icon: Calculator, color: 'text-violet-500' },
+  { id: 'summarizer', label: 'AI Summarizer', icon: FileSearch, color: 'text-cyan-500' },
+  // Study (5-9)
   { id: 'quiz', label: 'Quiz', icon: Brain, color: 'text-rose-500' },
-  { id: 'flashcards', label: 'Flashcards', icon: BookOpen, color: 'text-violet-500' },
-  { id: 'notes', label: 'Notes', icon: FileText, color: 'text-sky-500' },
+  { id: 'courses', label: 'Courses & Notes', icon: Library, color: 'text-pink-500' },
   { id: 'pomodoro', label: 'Focus Timer', icon: Timer, color: 'text-orange-500' },
   { id: 'websearch', label: 'Web Research', icon: Search, color: 'text-teal-500' },
-  { id: 'streak', label: 'Study Streak', icon: Flame, color: 'text-amber-500' },
   { id: 'studyplan', label: 'AI Study Plan', icon: CalendarDays, color: 'text-teal-500' },
-  // Productivity (12-16)
-  { id: 'courses', label: 'Courses', icon: Library, color: 'text-pink-500' },
-  { id: 'statistics', label: 'Statistics', icon: BarChart3, color: 'text-cyan-500' },
+  // Wellness & Progress (10-13)
+  { id: 'streak', label: 'Exam Tracker', icon: GraduationCap, color: 'text-indigo-500', badge: 'New' },
   { id: 'goals', label: 'Study Goals', icon: Target, color: 'text-emerald-500' },
-  { id: 'mood', label: 'Mood Tracker', icon: Heart, color: 'text-rose-500', badge: 'New' },
-  { id: 'achievements', label: 'Achievements', icon: Trophy, color: 'text-amber-500', badge: 'New' },
+  { id: 'achievements', label: 'Achievements', icon: Trophy, color: 'text-amber-500' },
   { id: 'settings', label: 'About', icon: Settings, color: 'text-muted-foreground' },
 ];
 
@@ -158,7 +151,7 @@ function AppSidebar({ userName }: { userName: string }) {
           <SidebarGroupLabel className="text-[11px] font-semibold uppercase tracking-wider">Study</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navItems.slice(5, 12).map((item) => (
+              {navItems.slice(5, 10).map((item) => (
                 <SidebarMenuItem key={item.id}>
                   <SidebarMenuButton
                     isActive={currentView === item.id}
@@ -176,10 +169,10 @@ function AppSidebar({ userName }: { userName: string }) {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[11px] font-semibold uppercase tracking-wider">Productivity</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[11px] font-semibold uppercase tracking-wider">Progress & Goals</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navItems.slice(12, 17).map((item) => (
+              {navItems.slice(10, 13).map((item) => (
                 <SidebarMenuItem key={item.id}>
                   <SidebarMenuButton
                     isActive={currentView === item.id}
@@ -189,6 +182,11 @@ function AppSidebar({ userName }: { userName: string }) {
                   >
                     <item.icon className={`w-4 h-4 ${currentView === item.id ? item.color : ''}`} />
                     <span className="truncate">{item.label}</span>
+                    {item.badge && (
+                      <Badge variant="secondary" className="ml-auto text-[9px] px-1.5 py-0 h-4 font-bold bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 border-0">
+                        {item.badge}
+                      </Badge>
+                    )}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -234,19 +232,15 @@ const viewComponents: Record<View, React.ComponentType> = {
   explain: FormulaExplainerView,
   summarizer: SummarizerView,
   quiz: QuizView,
-  flashcards: FlashcardsView,
-  notes: NotesView,
+  courses: CoursesView,
   pomodoro: PomodoroView,
   websearch: WebSearchView,
-  streak: StreakView,
-  mood: MoodTrackerView,
-  solver: MathSolverView,
-  courses: CoursesView,
-  statistics: StatisticsView,
-  goals: GoalsView,
+  streak: ExamTrackerView,
   studyplan: StudyPlanView,
+  goals: GoalsView,
   achievements: AchievementsView,
   settings: SettingsView,
+  solver: MathSolverView,
 };
 
 const viewByNumber: View[] = [
@@ -256,16 +250,11 @@ const viewByNumber: View[] = [
   'solver',
   'summarizer',
   'quiz',
-  'flashcards',
-  'notes',
+  'courses',
   'pomodoro',
   'websearch',
-  'streak',
   'studyplan',
-  'mood',
-  'solver',
-  'courses',
-  'statistics',
+  'streak',
   'goals',
   'achievements',
 ];

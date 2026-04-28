@@ -9,7 +9,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
-import ReactMarkdown from 'react-markdown';
+import { MarkdownWithMath } from '@/components/ui/markdown-with-math';
 import { speakWithFallback, stopBrowserSpeak } from '@/lib/tts';
 import { useAppStore } from '@/lib/store';
 import type { ExplainType } from '@/lib/store';
@@ -387,7 +387,7 @@ export function FormulaExplainerView() {
                       prose-pre:bg-muted prose-pre:rounded-xl prose-pre:text-xs
                       prose-blockquote:border-l-teal-400 prose-blockquote:text-muted-foreground
                       prose-strong:text-foreground prose-a:text-teal-600 dark:prose-a:text-teal-400">
-                      <ReactMarkdown>{result}</ReactMarkdown>
+                      <MarkdownWithMath>{result}</MarkdownWithMath>
                     </div>
                   </div>
                 </div>

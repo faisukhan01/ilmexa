@@ -23,5 +23,224 @@
     ],
     "createdAt": "2026-04-26T04:22:09.159Z",
     "updatedAt": "2026-04-26T04:22:20.791Z"
+  },
+  {
+    "id": "1777185578573-dm2bsf",
+    "userId": "cmof9hkvr0001pwvcngzdn7qb",
+    "title": "what is it in image",
+    "messages": [
+      {
+        "role": "user",
+        "content": "what is it in image"
+      }
+    ],
+    "createdAt": "2026-04-26T06:39:38.573Z",
+    "updatedAt": "2026-04-26T06:39:38.573Z"
+  },
+  {
+    "id": "1777203753917-i82zdm",
+    "userId": "cmof9hkvr0001pwvcngzdn7qb",
+    "title": "could you please analyze the image",
+    "messages": [
+      {
+        "role": "user",
+        "content": "could you please analyze the image"
+      },
+      {
+        "role": "assistant",
+        "content": "⚠️ Error: 400 {\"error\":{\"message\":\"The model `llama-3.2-11b-vision-preview` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.\",\"type\":\"invalid_request_error\",\"code\":\"model_decommissioned\"}}"
+      },
+      {
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "role": "assistant",
+        "content": "## Welcome\nI'm happy to meet you. I'm Ilmexa AI, your academic teaching assistant. I'm here to help you with any questions or topics you'd like to discuss. \n\n### How Can I Assist You Today?\nPlease let me know what's on your mind. Do you have a specific subject or question you'd like to explore? I'm all ears and ready to help. \n\n### Get Started\nYou can ask me anything, from explaining a complex concept to providing study tips. I'll do my best to provide clear, concise, and engaging responses to help you understand the material. \n\nSo, what would you like to talk about?"
+      },
+      {
+        "role": "user",
+        "content": "how are you?"
+      },
+      {
+        "role": "assistant",
+        "content": "## I'm Doing Well, Thank You\nI'm a large language model, so I don't have feelings or emotions like humans do, but I'm functioning properly and ready to assist you. I'm here to provide information, answer questions, and help with any topics you'd like to discuss.\n\n### How About You?\nHow's your day going so far? Is there something on your mind that you'd like to talk about or a problem you're trying to solve? I'm all ears and here to listen.\n\n### Let's Chat\nIf you're feeling stressed or overwhelmed, we can break down complex topics into smaller, manageable chunks. Or, if you're looking for something new to learn, I can suggest some interesting topics to explore. Just let me know what's on your mind, and we'll go from there."
+      }
+    ],
+    "createdAt": "2026-04-26T11:42:33.917Z",
+    "updatedAt": "2026-04-26T11:42:48.344Z"
+  },
+  {
+    "id": "1777204050587-rcqeoe",
+    "userId": "cmof9hkvr0001pwvcngzdn7qb",
+    "title": "Hey please have a look above I have atta…",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hey please have a look above I have attached my image and I want you to analyze it."
+      },
+      {
+        "role": "assistant",
+        "content": "⚠️ Network error — could not reach the server."
+      },
+      {
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "role": "assistant",
+        "content": "## Welcome\nIt seems like we just started our conversation, and you mentioned attaching an image earlier. However, as a text-based AI model, I don't have the capability to access or view images. I can only respond to text-based input.\n\nIf you'd like to describe the image or provide more context about what you'd like to discuss, I'm here to help. What's on your mind?"
+      },
+      {
+        "role": "user",
+        "content": "what is in the image?"
+      },
+      {
+        "role": "assistant",
+        "content": "## Image Analysis\n\nThe image presents a logo for \"ILMEXA AI\" against a black background.\n\n### Logo Components\n\n*   **Color Scheme:** The logo features a green color scheme.\n*   **Design Elements:**\n    *   A graduation cap\n    *   An open book\n*   **Text:** The text \"ILMEXA AI\" is displayed in green letters at the bottom of the logo.\n\n### Symbolism\n\n*   The graduation cap typically symbolizes academic achievement and education.\n*   The open book represents knowledge and learning.\n\n### Overall Impression\n\nThe logo suggests that ILMEXA AI is related to educational technology or artificial intelligence in education, given the combination of academic symbols and the company name."
+      },
+      {
+        "role": "user",
+        "content": "what is thee document abiut?\n\n[Attached: Faisal-DSA-CP01.docx (16.1 KB) — binary format, cannot be read directly. Please describe what you need help with.]"
+      },
+      {
+        "role": "assistant",
+        "content": "## Document Analysis\n\nUnfortunately, as a text-based AI model, I don't have the capability to directly access or read the attached document (`Faisal-DSA-CP01.docx`). However, I can try to help you with your question if you provide more context or describe the contents of the document.\n\n### Possible Ways to Get Help\n\n1. **Describe the document**: You can tell me what the document is about, what type of content it contains, and what you need help with.\n2. **Paste the text**: If the document contains text, you can paste the relevant sections into this chat window, and I'll do my best to assist you.\n3. **Specify the topic**: If you're looking for help with a specific topic or concept related to the document, let me know, and I'll try to provide guidance and support.\n\nPlease let me know how I can assist you further. What do you need help with regarding the document?"
+      }
+    ],
+    "createdAt": "2026-04-26T11:47:30.587Z",
+    "updatedAt": "2026-04-26T13:11:42.634Z"
+  },
+  {
+    "id": "1777209615435-3o40ft",
+    "userId": "cmof9hkvr0001pwvcngzdn7qb",
+    "title": "what is in the document?  [Attached: Fai…",
+    "messages": [
+      {
+        "role": "user",
+        "content": "what is in the document?\n\n[Attached: Faisal-DSA-CP01.docx (16.1 KB) — This file format cannot be read directly. Please paste the text content or describe what you need help with.]"
+      },
+      {
+        "role": "assistant",
+        "content": "### Unable to Read Document\nUnfortunately, I'm a large language model, I don't have the capability to directly read or access attached files, including the `Faisal-DSA-CP01.docx` document you've mentioned. This is due to security and compatibility reasons.\n\n### Alternative Solutions\nTo assist you, I can suggest a few alternatives:\n\n1. **Paste the text content**: If the document contains text, you can copy and paste the content into this chat window. I'll be happy to help you with any questions or topics related to the text.\n2. **Describe the document**: If you're unable to paste the content, you can describe what the document is about, what it contains, or what specific help you need with it. This will allow me to provide more targeted guidance.\n3. **Specify your needs**: Please let me know what you need help with regarding the document. Are you looking for explanations, examples, or solutions to specific problems? Your input will help me provide more effective assistance.\n\n### Next Steps\nOnce you provide more information or context about the document, I'll do my best to assist you. Please feel free to ask any questions or share your concerns, and I'll be here to help."
+      },
+      {
+        "role": "user",
+        "content": "what is this is in the image?"
+      },
+      {
+        "role": "assistant",
+        "content": "## Image Analysis\n\nThe image features a logo for **FSK EDU AI**, which appears to be an educational platform or tool utilizing artificial intelligence.\n\n### Logo Components\n\n* A green graduation cap\n* An open book with the cap placed on top of it\n* The text \"FSK EDU AI\" in green letters below the cap and book\n\n### Symbolism\n\n* The graduation cap and open book are symbolic of education and learning.\n* The use of green may represent growth, harmony, and balance.\n\n### Possible Implications\n\n* The logo suggests that FSK EDU AI is a platform focused on educational resources and tools.\n* The inclusion of AI in the name implies that the platform may utilize artificial intelligence to enhance the learning experience.\n\n### Conclusion\n\nThe logo effectively conveys a sense of academic excellence and innovation, suggesting that FSK EDU AI is a cutting-edge educational platform."
+      },
+      {
+        "role": "user",
+        "content": "what is it in the pdf?"
+      },
+      {
+        "role": "assistant",
+        "content": "### Unable to Process PDF\nUnfortunately, I'm a large language model, I don't have the capability to directly access or process attached files, including PDFs. However, I can still assist you if you provide the text content of the PDF.\n\n### Request for Text Content\nCould you please paste the text content of the Google_Ads.pdf into this chat window? This will allow me to:\n\n* Extract relevant information\n* Explain key concepts\n* Provide educational explanations suitable for university students\n\nOnce you provide the text content, I'll be happy to help you understand the material."
+      }
+    ],
+    "createdAt": "2026-04-26T13:20:15.435Z",
+    "updatedAt": "2026-04-26T13:24:45.215Z"
+  },
+  {
+    "id": "1777210513601-kber2x",
+    "userId": "cmof9hkvr0001pwvcngzdn7qb",
+    "title": "what is it in the doc?",
+    "messages": [
+      {
+        "role": "user",
+        "content": "what is it in the doc?\n\n📄 Faisal-DSA-CP01.docx"
+      },
+      {
+        "role": "assistant",
+        "content": "## Introduction to Deletion in Doubly Linked List\nA Doubly Linked List (DLL) is a linear data structure where each node contains three components: data, a pointer to the next node, and a pointer to the previous node. This bidirectional linking makes deletion operations more flexible and efficient compared to singly linked lists.\n\n## Node Structure Definition\nThe basic node structure that forms the building block of our doubly linked list is defined as:\n```java\nclass Node {\n    int data;       // Data stored in the node\n    Node next;      // Reference to next node\n    Node prev;      // Reference to previous node\n\n    Node(int data) {\n        this.data = data;\n        this.next = null;\n        this.prev = null;\n    }\n}\n```\n\n## Three Cases of Deletion in DLL\nThe three cases of deletion are categorized based on the position of the node to be removed from the list:\n\n*   **Case 1: Delete First Node (Head)**\n    *   Time Complexity: O(1)\n    *   Key Operations: Update head pointer\n*   **Case 2: Delete Last Node (Tail)**\n    *   Time Complexity: O(1)\n    *   Key Operations: Update tail pointer\n*   **Case 3: Delete Middle Node**\n    *   Time Complexity: O(n) to find, O(1) to delete\n    *   Key Operations: Update both neighbors\n\n### Case 1: Delete the First Node (Head)\nDeleting the first node (head) is one of the most common operations in a doubly linked list. This operation requires updating the head pointer to point to the second node, and setting the new head's previous pointer to null.\n\n#### Implementation Code\n```java\npublic void deleteFirst() {\n    // Case: Empty list\n    if (head == null) {\n        System.out.println(\"List is empty, nothing to delete.\");\n        return;\n    }\n\n    // Case: Single node in list\n    if (head.next == null) {\n        head = null;\n        tail = null;\n    } else {\n        // Case: Multiple nodes - delete first\n        head = head.next;      // Move head to second node\n        head.prev = null;      // Set new head's prev to null\n    }\n\n    size--;  // Decrement size\n}\n```\n\n### Case 2: Delete the Last Node (Tail)\nDeleting the last node (tail) demonstrates one of the key advantages of a doubly linked list over a singly linked list. In a singly linked list, deleting the last node requires O(n) time to traverse and find the second-to-last node. However, in a DLL, we can access the previous node directly through the prev pointer, making this operation O(1).\n\n#### Implementation Code\n```java\npublic void deleteLast() {\n    // Case: Empty list\n    if (head == null) {\n        System.out.println(\"List is empty, nothing to delete.\");\n        return;\n    }\n\n    // Case: Single node in list\n    if (head.next == null) {\n        head = null;\n        tail = null;\n    } else {\n        // Case: Multiple nodes - delete last\n        tail = tail.prev;      // Move tail to second-to-last node\n        tail.next = null;      // Set new tail's next to null\n    }\n\n    size--;  // Decrement size\n}\n```\n\n### Case 3: Delete a Node from the Middle\nDeleting a node from the middle of the list is the most complex case among the three. This operation requires updating both neighboring nodes to bypass the deleted node. While finding the node to delete takes O(n) time, the actual deletion operation after finding the node is O(1), which is another advantage of DLL over SLL.\n\n#### Implementation Code\n```java\npublic void deleteAtIndex(int index) {\n    // Case: Invalid index\n    if (index < 0 || index >= size) {\n        throw new IndexOutOfBoundsException(\"Invalid index\");\n    }\n\n    // Case: Delete first node (redirects to Case 1)\n    if (index == 0) {\n        deleteFirst();\n        return;\n    }\n\n    // Case: Delete last node (redirects to Case 2)\n    if (index == size - 1) {\n        deleteLast();\n        return;\n    }\n\n    // Case: Delete middle node\n    Node current = head;\n    for (int i = 0; i < index; i++) {\n        current = current.next;\n    }\n\n    // Link the previous node to the next node\n    current.prev.next = current.next;\n\n    // Link the next node to the previous node\n    current.next.prev = current.prev;\n\n    size--;  // Decrement size\n}\n```\n\n## Complete DoublyLinkedList Class\nThe complete implementation of the DoublyLinkedList class with all three deletion cases integrated is provided below:\n```java\nclass DoublyLinkedList {\n    Node head, tail;\n    int size = 0;\n\n    // Add at beginning\n    void addFirst(int data) { /* ... */ }\n\n    // Add at end\n    void addLast(int data) { /* ... */ }\n\n    // CASE 1: Delete first node\n    void deleteFirst() { /* implemented above */ }\n\n    // CASE 2: Delete last node\n    void deleteLast() { /* implemented above */ }\n\n    // CASE 3: Delete at specific index\n    void deleteAtIndex(int index) { /* implemented above */ }\n\n    // Display the list\n    void display() {\n        Node temp = head;\n        while (temp != null) {\n            System.out.print(temp.data + \" <-> \");\n            temp = temp.next;\n        }\n        System.out.println(\"null\");\n    }\n}\n```\n\n## Summary\nThe following table summarizes the key differences between the three deletion cases in a Doubly Linked List:\n\n| Case | Time Complexity | Pointer Updates | Special Handling |\n| --- | --- | --- | --- |\n| Delete First | O(1) | head.prev = null | Single node case |\n| Delete Last | O(1) | tail.next = null | Single node case |\n| Delete Middle | O(n) find + O(1) delete | Both neighbors | Invalid index check |\n\nIn conclusion, the Doubly Linked List provides efficient deletion operations at both ends of the list in O(1) time, which is a significant advantage over Singly Linked Lists. The presence of both prev and next pointers enables bidirectional traversal and simplifies the deletion process by eliminating the need to traverse the list to find the previous node."
+      }
+    ],
+    "createdAt": "2026-04-26T13:35:13.601Z",
+    "updatedAt": "2026-04-26T13:35:17.456Z"
+  },
+  {
+    "id": "1777210543310-hfz3qg",
+    "userId": "cmof9hkvr0001pwvcngzdn7qb",
+    "title": "what is this in the PDF?",
+    "messages": [
+      {
+        "role": "user",
+        "content": "what is this in the PDF?\n\n📄 Google_Ads.pdf"
+      },
+      {
+        "role": "assistant",
+        "content": "## Unable to Process Attachment\nUnfortunately, I'm a large language model, I don't have the capability to directly access or process attachments, including the `Google_Ads.pdf` file you mentioned. \n\n## Request for Text Content\nTo assist you, I would like to request that you paste the text content of the PDF file. This will enable me to provide a thorough explanation of the content, similar to how I would analyze a document page.\n\n## How to Proceed\nPlease paste the text content of the `Google_Ads.pdf` file, and I will:\n* Extract the text\n* Explain the content thoroughly\n* Provide educational explanations suitable for university students\n* Format the response using markdown for clarity\n\nOnce you provide the text content, I'll be happy to help you understand the material."
+      },
+      {
+        "role": "user",
+        "content": "what is it there??\n\n📄 Faisal-DSA-CP01.docx"
+      },
+      {
+        "role": "assistant",
+        "content": "## Introduction to Deletion in Doubly Linked List\nA Doubly Linked List (DLL) is a linear data structure where each node contains three components: data, a pointer to the next node, and a pointer to the previous node. This bidirectional linking makes deletion operations more flexible and efficient compared to singly linked lists.\n\n### Node Structure Definition\nThe basic node structure that forms the building block of a doubly linked list is defined as:\n```java\nclass Node {\n    int data;       // Data stored in the node\n    Node next;      // Reference to next node\n    Node prev;      // Reference to previous node\n\n    Node(int data) {\n        this.data = data;\n        this.next = null;\n        this.prev = null;\n    }\n}\n```\n\n## Three Cases of Deletion in DLL\nThere are three primary cases of deletion in a Doubly Linked List, each requiring different handling based on the position of the node to be deleted.\n\n### Case 1: Delete First Node (Head)\n* Time Complexity: O(1)\n* Key Operations: Update head pointer\n* Implementation Code:\n```java\npublic void deleteFirst() {\n    if (head == null) {\n        System.out.println(\"List is empty, nothing to delete.\");\n        return;\n    }\n\n    if (head.next == null) {\n        head = null;\n        tail = null;\n    } else {\n        head = head.next;      // Move head to second node\n        head.prev = null;      // Set new head's prev to null\n    }\n\n    size--;  // Decrement size\n}\n```\n\n### Case 2: Delete Last Node (Tail)\n* Time Complexity: O(1)\n* Key Operations: Update tail pointer\n* Implementation Code:\n```java\npublic void deleteLast() {\n    if (head == null) {\n        System.out.println(\"List is empty, nothing to delete.\");\n        return;\n    }\n\n    if (head.next == null) {\n        head = null;\n        tail = null;\n    } else {\n        tail = tail.prev;      // Move tail to second-to-last node\n        tail.next = null;      // Set new tail's next to null\n    }\n\n    size--;  // Decrement size\n}\n```\n\n### Case 3: Delete Middle Node\n* Time Complexity: O(n) to find, O(1) to delete\n* Key Operations: Update both neighbors\n* Implementation Code:\n```java\npublic void deleteAtIndex(int index) {\n    if (index < 0 || index >= size) {\n        throw new IndexOutOfBoundsException(\"Invalid index\");\n    }\n\n    if (index == 0) {\n        deleteFirst();\n        return;\n    }\n\n    if (index == size - 1) {\n        deleteLast();\n        return;\n    }\n\n    Node current = head;\n    for (int i = 0; i < index; i++) {\n        current = current.next;\n    }\n\n    current.prev.next = current.next;\n    current.next.prev = current.prev;\n\n    size--;  // Decrement size\n}\n```\n\n## Complete DoublyLinkedList Class\nThe complete implementation of the DoublyLinkedList class with all three deletion cases integrated is:\n```java\nclass DoublyLinkedList {\n    Node head, tail;\n    int size = 0;\n\n    // Add at beginning\n    void addFirst(int data) { /* ... */ }\n\n    // Add at end\n    void addLast(int data) { /* ... */ }\n\n    // CASE 1: Delete first node\n    void deleteFirst() { /* implemented above */ }\n\n    // CASE 2: Delete last node\n    void deleteLast() { /* implemented above */ }\n\n    // CASE 3: Delete at specific index\n    void deleteAtIndex(int index) { /* implemented above */ }\n\n    // Display the list\n    void display() {\n        Node temp = head;\n        while (temp != null) {\n            System.out.print(temp.data + \" <-> \");\n            temp = temp.next;\n        }\n        System.out.println(\"null\");\n    }\n}\n```\n\n## Summary\nThe following table summarizes the key differences between the three deletion cases in a Doubly Linked List:\n\n| Case | Time Complexity | Pointer Updates | Special Handling |\n| --- | --- | --- | --- |\n| Delete First | O(1) | head.prev = null | Single node case |\n| Delete Last | O(1) | tail.next = null | Single node case |\n| Delete Middle | O(n) find + O(1) delete | Both neighbors | Invalid index check |\n\nIn conclusion, the Doubly Linked List provides efficient deletion operations at both ends of the list in O(1) time, which is a significant advantage over Singly Linked Lists. The presence of both prev and next pointers enables bidirectional traversal and simplifies the deletion process by eliminating the need to traverse the list to find the previous node."
+      },
+      {
+        "role": "user",
+        "content": "make a  calculator using java"
+      },
+      {
+        "role": "assistant",
+        "content": "## Java Calculator Implementation\nHere's a simple implementation of a calculator using Java. This calculator supports basic arithmetic operations like addition, subtraction, multiplication, and division.\n\n### Calculator.java\n```java\nimport java.util.Scanner;\n\npublic class Calculator {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.println(\"Simple Calculator\");\n        System.out.println(\"1. Addition\");\n        System.out.println(\"2. Subtraction\");\n        System.out.println(\"3. Multiplication\");\n        System.out.println(\"4. Division\");\n        System.out.println(\"5. Exit\");\n\n        while (true) {\n            System.out.print(\"Choose an operation (1/2/3/4/5): \");\n            int choice = scanner.nextInt();\n\n            if (choice == 5) {\n                System.out.println(\"Exiting calculator. Goodbye!\");\n                break;\n            }\n\n            System.out.print(\"Enter first number: \");\n            double num1 = scanner.nextDouble();\n\n            System.out.print(\"Enter second number: \");\n            double num2 = scanner.nextDouble();\n\n            switch (choice) {\n                case 1:\n                    System.out.println(num1 + \" + \" + num2 + \" = \" + add(num1, num2));\n                    break;\n                case 2:\n                    System.out.println(num1 + \" - \" + num2 + \" = \" + subtract(num1, num2));\n                    break;\n                case 3:\n                    System.out.println(num1 + \" * \" + num2 + \" = \" + multiply(num1, num2));\n                    break;\n                case 4:\n                    if (num2 != 0) {\n                        System.out.println(num1 + \" / \" + num2 + \" = \" + divide(num1, num2));\n                    } else {\n                        System.out.println(\"Error! Division by zero is not allowed.\");\n                    }\n                    break;\n                default:\n                    System.out.println(\"Invalid choice. Please choose a valid operation.\");\n            }\n        }\n    }\n\n    /**\n     * Adds two numbers.\n     *\n     * @param num1 First number.\n     * @param num2 Second number.\n     * @return Sum of num1 and num2.\n     */\n    private static double add(double num1, double num2) {\n        return num1 + num2;\n    }\n\n    /**\n     * Subtracts num2 from num1.\n     *\n     * @param num1 First number.\n     * @param num2 Second number.\n     * @return Difference of num1 and num2.\n     */\n    private static double subtract(double num1, double num2) {\n        return num1 - num2;\n    }\n\n    /**\n     * Multiplies two numbers.\n     *\n     * @param num1 First number.\n     * @param num2 Second number.\n     * @return Product of num1 and num2.\n     */\n    private static double multiply(double num1, double num2) {\n        return num1 * num2;\n    }\n\n    /**\n     * Divides num1 by num2.\n     *\n     * @param num1 First number.\n     * @param num2 Second number.\n     * @return Quotient of num1 and num2.\n     */\n    private static double divide(double num1, double num2) {\n        return num1 / num2;\n    }\n}\n```\n\n### How to Run the Calculator\n1. Save the above code in a file named `Calculator.java`.\n2. Compile the code using `javac Calculator.java`.\n3. Run the calculator using `java Calculator`.\n4. Follow the on-screen instructions to perform calculations.\n\n### Example Use Cases\n* Addition: Choose operation 1, enter two numbers (e.g., 5 and 3), and the calculator will display the sum (8).\n* Subtraction: Choose operation 2, enter two numbers (e.g., 10 and 4), and the calculator will display the difference (6).\n* Multiplication: Choose operation 3, enter two numbers (e.g., 7 and 2), and the calculator will display the product (14).\n* Division: Choose operation 4, enter two numbers (e.g., 9 and 3), and the calculator will display the quotient (3).\n\nNote: This is a basic implementation and does not handle advanced mathematical operations or error handling. You can extend this code to include more features as per your requirements."
+      },
+      {
+        "role": "user",
+        "content": "pleaas use a beginnner level"
+      },
+      {
+        "role": "assistant",
+        "content": "## Simple Calculator in Java\nHere's a simple calculator program in Java that adds, subtracts, multiplies, and divides two numbers.\n\n### Calculator.java\n```java\nimport java.util.Scanner;\n\npublic class Calculator {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n\n        System.out.println(\"Simple Calculator\");\n        System.out.println(\"1. Addition\");\n        System.out.println(\"2. Subtraction\");\n        System.out.println(\"3. Multiplication\");\n        System.out.println(\"4. Division\");\n\n        System.out.print(\"Choose an operation (1/2/3/4): \");\n        int choice = scanner.nextInt();\n\n        System.out.print(\"Enter first number: \");\n        double num1 = scanner.nextDouble();\n\n        System.out.print(\"Enter second number: \");\n        double num2 = scanner.nextDouble();\n\n        if (choice == 1) {\n            System.out.println(\"Result: \" + (num1 + num2));\n        } else if (choice == 2) {\n            System.out.println(\"Result: \" + (num1 - num2));\n        } else if (choice == 3) {\n            System.out.println(\"Result: \" + (num1 * num2));\n        } else if (choice == 4) {\n            if (num2 != 0) {\n                System.out.println(\"Result: \" + (num1 / num2));\n            } else {\n                System.out.println(\"Error! Division by zero is not allowed.\");\n            }\n        }\n    }\n}\n```\n\n### How to Run the Calculator\n1. Save the above code in a file named `Calculator.java`.\n2. Compile the code using `javac Calculator.java`.\n3. Run the calculator using `java Calculator`.\n4. Follow the on-screen instructions to perform calculations.\n\n### Example Use Cases\n* Addition: Choose operation 1, enter two numbers (e.g., 5 and 3), and the calculator will display the sum (8).\n* Subtraction: Choose operation 2, enter two numbers (e.g., 10 and 4), and the calculator will display the difference (6).\n* Multiplication: Choose operation 3, enter two numbers (e.g., 7 and 2), and the calculator will display the product (14).\n* Division: Choose operation 4, enter two numbers (e.g., 9 and 3), and the calculator will display the quotient (3).\n\n### What's Happening in the Code\n* We first import the `java.util.Scanner` class to read user input.\n* We create a `Scanner` object to read the user's choice and numbers.\n* We use `if-else` statements to perform the chosen operation.\n* We use `System.out.println` to display the result.\n\nThis is a simple calculator program that demonstrates basic programming concepts in Java. You can build upon this code to create more complex programs."
+      },
+      {
+        "role": "user",
+        "content": "Hello, could you please let me know DSA and OOP which one is more better?"
+      },
+      {
+        "role": "assistant",
+        "content": "## Introduction to DSA and OOP\nWhen it comes to programming, two fundamental concepts are Data Structures and Algorithms (DSA) and Object-Oriented Programming (OOP). Both are essential for a programmer to master, but they serve different purposes.\n\n### Data Structures and Algorithms (DSA)\n* DSA deals with the way data is organized, stored, and manipulated in a program.\n* It involves understanding various data structures like arrays, linked lists, stacks, queues, trees, and graphs.\n* Algorithms are the procedures used to manipulate and process data in these structures.\n* DSA is crucial for solving complex problems efficiently and writing optimized code.\n\n### Object-Oriented Programming (OOP)\n* OOP is a programming paradigm that organizes software design around data, or objects, rather than functions and logic.\n* It involves creating objects that have properties and behaviors, and interacting with each other to achieve a common goal.\n* OOP principles like encapsulation, inheritance, and polymorphism help write reusable, modular, and maintainable code.\n* OOP is essential for building large-scale, complex software systems.\n\n## Comparison of DSA and OOP\n| Aspect | DSA | OOP |\n| --- | --- | --- |\n| Focus | Data organization and manipulation | Software design and organization |\n| Key concepts | Arrays, linked lists, stacks, queues, trees, graphs, algorithms | Classes, objects, inheritance, polymorphism, encapsulation |\n| Importance | Crucial for solving complex problems and optimizing code | Essential for building large-scale, maintainable software systems |\n| Learning curve | Steeper, requires practice and problem-solving | More gradual, builds upon fundamental programming concepts |\n\n## Which One is More Important?\nIt's not a question of which one is more important, as both DSA and OOP are essential for a programmer to master. However, if you're starting out, it's recommended to focus on building a strong foundation in DSA first.\n\n* DSA provides a solid understanding of how data is organized and manipulated, which is critical for solving problems and writing efficient code.\n* Once you have a good grasp of DSA, you can apply OOP principles to design and organize your code, making it more modular, reusable, and maintainable.\n\n### Recommendation\n1. Start by learning the basics of DSA, including data structures and algorithms.\n2. Practice solving problems on platforms like LeetCode, HackerRank, or CodeForces to improve your DSA skills.\n3. Once you have a solid foundation in DSA, learn OOP principles and apply them to your coding projects.\n4. Continuously practice and improve your skills in both DSA and OOP to become a well-rounded programmer.\n\nRemember, both DSA and OOP are essential for a programmer to master, and it's not a question of which one is more important. By focusing on building a strong foundation in both areas, you'll become a skilled programmer capable of solving complex problems and designing maintainable software systems."
+      },
+      {
+        "role": "user",
+        "content": "what is it in the document?\n\n📄 Faisal-DSA-CP01.docx"
+      },
+      {
+        "role": "assistant",
+        "content": "## Introduction to Deletion in Doubly Linked List\nA Doubly Linked List (DLL) is a linear data structure where each node contains three components: data, a pointer to the next node, and a pointer to the previous node. This bidirectional linking makes deletion operations more flexible and efficient compared to singly linked lists.\n\n### Node Structure Definition\nThe basic node structure that forms the building block of our doubly linked list is defined as:\n```java\nclass Node {\n    int data;       // Data stored in the node\n    Node next;      // Reference to next node\n    Node prev;      // Reference to previous node\n\n    Node(int data) {\n        this.data = data;\n        this.next = null;\n        this.prev = null;\n    }\n}\n```\n\n## Three Cases of Deletion in DLL\nThere are three primary cases of deletion in a Doubly Linked List, each requiring different handling based on the position of the node to be deleted.\n\n### Case 1: Delete First Node (Head)\n* Time Complexity: O(1)\n* Key Operations: Update head pointer\n* Implementation Code:\n```java\npublic void deleteFirst() {\n    // Case: Empty list\n    if (head == null) {\n        System.out.println(\"List is empty, nothing to delete.\");\n        return;\n    }\n\n    // Case: Single node in list\n    if (head.next == null) {\n        head = null;\n        tail = null;\n    } else {\n        // Case: Multiple nodes - delete first\n        head = head.next;      // Move head to second node\n        head.prev = null;      // Set new head's prev to null\n    }\n\n    size--;  // Decrement size\n}\n```\n\n### Case 2: Delete Last Node (Tail)\n* Time Complexity: O(1)\n* Key Operations: Update tail pointer\n* Implementation Code:\n```java\npublic void deleteLast() {\n    // Case: Empty list\n    if (head == null) {\n        System.out.println(\"List is empty, nothing to delete.\");\n        return;\n    }\n\n    // Case: Single node in list\n    if (head.next == null) {\n        head = null;\n        tail = null;\n    } else {\n        // Case: Multiple nodes - delete last\n        tail = tail.prev;      // Move tail to second-to-last node\n        tail.next = null;      // Set new tail's next to null\n    }\n\n    size--;  // Decrement size\n}\n```\n\n### Case 3: Delete Middle Node\n* Time Complexity: O(n) to find, O(1) to delete\n* Key Operations: Update both neighbors\n* Implementation Code:\n```java\npublic void deleteAtIndex(int index) {\n    // Case: Invalid index\n    if (index < 0 || index >= size) {\n        throw new IndexOutOfBoundsException(\"Invalid index\");\n    }\n\n    // Case: Delete first node (redirects to Case 1)\n    if (index == 0) {\n        deleteFirst();\n        return;\n    }\n\n    // Case: Delete last node (redirects to Case 2)\n    if (index == size - 1) {\n        deleteLast();\n        return;\n    }\n\n    // Case: Delete middle node\n    Node current = head;\n    for (int i = 0; i < index; i++) {\n        current = current.next;\n    }\n\n    // Link the previous node to the next node\n    current.prev.next = current.next;\n\n    // Link the next node to the previous node\n    current.next.prev = current.prev;\n\n    size--;  // Decrement size\n}\n```\n\n## Complete DoublyLinkedList Class\nThe complete implementation of the DoublyLinkedList class with all three deletion cases integrated is:\n```java\nclass DoublyLinkedList {\n    Node head, tail;\n    int size = 0;\n\n    // Add at beginning\n    void addFirst(int data) { /* ... */ }\n\n    // Add at end\n    void addLast(int data) { /* ... */ }\n\n    // CASE 1: Delete first node\n    void deleteFirst() { /* implemented above */ }\n\n    // CASE 2: Delete last node\n    void deleteLast() { /* implemented above */ }\n\n    // CASE 3: Delete at specific index\n    void deleteAtIndex(int index) { /* implemented above */ }\n\n    // Display the list\n    void display() {\n        Node temp = head;\n        while (temp != null) {\n            System.out.print(temp.data + \" <-> \");\n            temp = temp.next;\n        }\n        System.out.println(\"null\");\n    }\n}\n```\n\n## Summary\nThe following table summarizes the key differences between the three deletion cases in a Doubly Linked List:\n\n| Case | Time Complexity | Pointer Updates | Special Handling |\n| --- | --- | --- | --- |\n| Delete First | O(1) | head.prev = null | Single node case |\n| Delete Last | O(1) | tail.next = null | Single node case |\n| Delete Middle | O(n) find + O(1) delete | Both neighbors | Invalid index check |\n\nIn conclusion, the Doubly Linked List provides efficient deletion operations at both ends of the list in O(1) time, which is a significant advantage over Singly Linked Lists. The presence of both prev and next pointers enables bidirectional traversal and simplifies the deletion process by eliminating the need to traverse the list to find the previous node."
+      },
+      {
+        "role": "user",
+        "content": "what is it in the PDF?\n\n📄 Google_Ads.pdf"
+      },
+      {
+        "role": "assistant",
+        "content": "## Unable to Process PDF\nUnfortunately, I'm a large language model, I don't have the capability to directly access or process attached files, including PDFs. However, I can guide you on how to share the content of the `Google_Ads.pdf` file with me.\n\n### Options to Share Content\nYou can share the content of the PDF file with me in the following ways:\n1. **Copy and paste the text**: If the PDF contains text, you can copy and paste the relevant content into this chat window.\n2. **Describe the content**: If the PDF contains images, diagrams, or other non-text content, you can describe it to me, and I'll do my best to provide an explanation or analysis.\n3. **Provide a summary**: If the PDF is a lengthy document, you can provide a brief summary of its content, and I can help you understand specific sections or concepts.\n\n### How to Proceed\nPlease choose one of the options above and share the content of the `Google_Ads.pdf` file with me. I'll be happy to assist you in understanding the material, whether it's related to Google Ads, digital marketing, or any other topic."
+      }
+    ],
+    "createdAt": "2026-04-26T13:35:43.310Z",
+    "updatedAt": "2026-04-26T14:38:10.224Z"
+  },
+  {
+    "id": "1777214330929-ufh9ok",
+    "userId": "cmof9hkvr0001pwvcngzdn7qb",
+    "title": "Hello, could you please let me know abou…",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hello, could you please let me know about the DSA, what is it?"
+      },
+      {
+        "role": "assistant",
+        "content": "## Introduction to DSA\nThe DSA, or **Disability Support Allowance**, is a type of financial assistance provided by the government to individuals with disabilities. However, I believe you might be referring to a different DSA, possibly the **Digital Services Act** or **Defence and Security Accelerator**, but the most common DSA in the context of education and technology is the **Data Structures and Algorithms**.\n\n## Data Structures and Algorithms (DSA)\nData Structures and Algorithms is a fundamental concept in computer science that deals with the organization, storage, and manipulation of data. It involves the study of data structures, such as arrays, linked lists, stacks, queues, trees, and graphs, as well as algorithms, which are step-by-step procedures for solving problems.\n\n### Key Components of DSA\nSome of the key components of DSA include:\n\n* **Data Structures**: These are the ways in which data is organized and stored, such as arrays, linked lists, stacks, queues, trees, and graphs.\n* **Algorithms**: These are the step-by-step procedures for solving problems, such as sorting, searching, and graph traversal.\n* **Time and Space Complexity**: These refer to the amount of time and memory required by an algorithm to solve a problem.\n* **Trade-Offs**: These refer to the compromises that must be made between different factors, such as time and space complexity, when designing algorithms and data structures.\n\n### Importance of DSA\nDSA is an essential concept in computer science because it provides a foundation for solving complex problems and creating efficient software systems. It is used in a wide range of applications, including:\n\n* **Operating Systems**: DSA is used to manage memory, process scheduling, and file systems.\n* **Database Systems**: DSA is used to store and retrieve data efficiently.\n* **Web Development**: DSA is used to create efficient and scalable web applications.\n* **Artificial Intelligence**: DSA is used to develop intelligent systems that can solve complex problems.\n\n### Real-World Applications of DSA\nSome real-world applications of DSA include:\n\n* **Google's Search Algorithm**: Google's search algorithm uses DSA to quickly and efficiently retrieve relevant search results.\n* **Facebook's News Feed Algorithm**: Facebook's news feed algorithm uses DSA to prioritize and display posts in a user's news feed.\n* **Amazon's Recommendation System**: Amazon's recommendation system uses DSA to suggest products to users based on their browsing and purchasing history.\n\n### Learning DSA\nIf you're interested in learning DSA, I would recommend starting with the basics of data structures and algorithms, such as arrays, linked lists, and sorting algorithms. You can then move on to more advanced topics, such as graph algorithms and dynamic programming.\n\nDo you have any specific questions about DSA or would you like to know more about a particular topic?"
+      }
+    ],
+    "createdAt": "2026-04-26T14:38:50.929Z",
+    "updatedAt": "2026-04-26T14:38:53.668Z"
   }
 ]

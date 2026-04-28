@@ -504,6 +504,7 @@
 /* Smooth transitions for all interactive elements */
 button, a, [role="button"] {
   transition: all 0.15s ease;
+  touch-action: manipulation;
 }
 
 /* Glassmorphism utilities */
@@ -987,16 +988,25 @@ img[data-loaded="false"] {
     max-width: calc(100vw - 2rem) !important;
   }
 
-  /* Hide Quick Notes widget on mobile */
-  .fab-button,
+  /* On mobile the panel is a bottom sheet — hide the desktop floating panel */
   .quick-notes-panel {
     display: none !important;
   }
+
+  /* Smaller FAB on mobile so it doesn't dominate the screen */
+  .fab-button {
+    width: 44px !important;
+    height: 44px !important;
+    bottom: 72px !important;
+    right: 14px !important;
+    left: auto !important;
+    border-radius: 14px !important;
+  }
 }
 
-/* Smooth textarea auto-resize */
+/* Textareas use fixed container height for stability */
 textarea {
-  field-sizing: content;
+  field-sizing: fixed;
 }
 
 /* Mobile-specific chat improvements */
@@ -1004,12 +1014,70 @@ textarea {
   .markdown-content {
     font-size: 0.875rem;
     line-height: 1.6;
+    /* Force word wrapping on mobile */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
   .markdown-content pre {
     font-size: 0.75rem;
     padding: 0.75rem;
+    padding-right: 3rem;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    /* Ensure pre blocks don't overflow */
+    max-width: 100%;
+    /* Add scroll indicator gradient on right edge */
+    position: relative;
+  }
+  /* Gradient fade on right edge */
+  .markdown-content pre::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 50px;
+    background: linear-gradient(to left, oklch(0.13 0.015 155) 0%, oklch(0.13 0.015 155) 20%, transparent 100%);
+    pointer-events: none;
+    opacity: 1;
+  }
+  .dark .markdown-content pre::after {
+    background: linear-gradient(to left, oklch(0.13 0.015 155) 0%, oklch(0.13 0.015 155) 20%, transparent 100%);
+  }
+  /* Swipe indicator icon */
+  .markdown-content pre::before {
+    content: '⟩⟩';
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    color: oklch(0.96 0.005 155 / 0.4);
+    font-size: 1.2rem;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 1;
+    animation: swipeHint 2s ease-in-out infinite;
+  }
+  @keyframes swipeHint {
+    0%, 100% { opacity: 0.4; transform: translateY(-50%) translateX(0); }
+    50% { opacity: 0.7; transform: translateY(-50%) translateX(-4px); }
+  }
+  /* Better scrollbar for code blocks */
+  .markdown-content pre::-webkit-scrollbar {
+    height: 6px;
+  }
+  .markdown-content pre::-webkit-scrollbar-track {
+    background: oklch(0.18 0.015 155);
+    border-radius: 3px;
+    margin: 0 8px;
+  }
+  .markdown-content pre::-webkit-scrollbar-thumb {
+    background: oklch(0.40 0.02 155);
+    border-radius: 3px;
+  }
+  .markdown-content pre::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.50 0.02 155);
   }
   .markdown-content h1 { font-size: 1.25rem; }
   .markdown-content h2 { font-size: 1.1rem; }
@@ -1018,13 +1086,50 @@ textarea {
     font-size: 0.8rem;
     padding: 0.1rem 0.25rem;
     word-break: break-all;
+    /* Allow inline code to wrap */
+    white-space: pre-wrap;
   }
   .markdown-content table {
     font-size: 0.8rem;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Add scroll indicator for tables too */
+    position: relative;
+  }
+  .markdown-content table::after {
+    content: '→';
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    color: oklch(0.50 0.14 160 / 0.5);
+    font-size: 1rem;
+    font-weight: bold;
+    pointer-events: none;
+    background: linear-gradient(to left, oklch(0.99 0.002 155) 0%, oklch(0.99 0.002 155) 30%, transparent 100%);
+    padding: 4px 8px 4px 20px;
+  }
+  .dark .markdown-content table::after {
+    color: oklch(0.70 0.015 155 / 0.5);
+    background: linear-gradient(to left, oklch(0.18 0.015 155) 0%, oklch(0.18 0.015 155) 30%, transparent 100%);
   }
   .markdown-content th,
   .markdown-content td {
     padding: 0.35rem 0.5rem;
+  }
+  /* Force lists to wrap properly */
+  .markdown-content ul,
+  .markdown-content ol {
+    padding-left: 1.25rem;
+  }
+  .markdown-content li {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  /* Ensure long URLs wrap */
+  .markdown-content a {
+    word-break: break-all;
   }
 }
 
@@ -1033,6 +1138,12 @@ textarea {
   max-width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure code blocks scroll instead of overflow */
+.markdown-content pre code {
+  display: block;
+  overflow-x: auto;
 }
 
 /* Scroll to bottom button animation */
@@ -1683,6 +1794,75 @@ a:focus-visible,
   background: oklch(0.30 0.015 155 / 0.6);
 }
 
+
+/* ===== Dashboard Hero Animated Gradient ===== */
+
+@keyframes heroBgShift {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+.hero-animated-bg {
+  background: linear-gradient(
+    -45deg,
+    #047857,
+    #059669,
+    #0d9488,
+    #0891b2,
+    #059669,
+    #047857
+  );
+  background-size: 400% 400%;
+  animation: heroBgShift 10s ease infinite;
+}
+
+@keyframes heroBgShiftAlt {
+  0%, 100% { background-position: 0%   80%; }
+  50%       { background-position: 100% 20%; }
+}
+
+/* Hero name shimmer override (brighter, faster) */
+.hero-name-glow {
+  background: linear-gradient(
+    90deg,
+    #ffffff  0%,
+    #e0f2fe 25%,
+    #ffffff 50%,
+    #fce7f3 75%,
+    #ffffff 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: heroNameGlow 3s ease-in-out infinite;
+}
+
+@keyframes heroNameGlow {
+  0%   { background-position: -100% 0; }
+  100% { background-position: 200%  0; }
+}
+
+/* Stat card micro-shine sweep */
+@keyframes cardShine {
+  0%   { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(300%)  skewX(-12deg); }
+}
+.stat-card-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.18) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%) skewX(-12deg);
+  animation: cardShine 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
 
 /* ===== Animated Login Page Custom Styles ===== */
 

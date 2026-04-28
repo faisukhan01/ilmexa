@@ -7,8 +7,14 @@ export async function GET(req: NextRequest) {
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {
+    const { searchParams } = new URL(req.url);
+    const courseId = searchParams.get('courseId');
+
     const notes = await db.note.findMany({
-      where: { userId: session.userId },
+      where: {
+        userId: session.userId,
+        ...(courseId ? { courseId } : {}),
+      },
       orderBy: { updatedAt: 'desc' },
     });
     return NextResponse.json({ notes });

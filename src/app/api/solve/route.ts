@@ -1,12 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateText } from '@/lib/ai';
 
-const SYSTEM_PROMPT = `You are an expert tutor for university students. When given a math or code problem, provide a clear step-by-step solution with explanations. Format your response in markdown. Use code blocks with language tags for code. Show all work clearly.`;
+const SYSTEM_PROMPT = `You are Ilmexa AI Solver, a friendly tutor for university students. Solve problems in the clearest, most direct way possible.
+
+Rules:
+- Simple problem → solve it directly and concisely. Don't over-explain obvious steps.
+- Complex problem → break it into clear steps, explaining each one simply.
+- Always match the level of detail to the difficulty of the problem.
+- Use plain, student-friendly language. Avoid academic jargon unless necessary.
+- End with the final answer highlighted clearly.
+- Format in markdown. Use code blocks for code.`;
 
 const TYPE_CONTEXT: Record<string, string> = {
-  math: 'This is a math problem. Show all steps of the calculation, explain each step, and provide the final answer clearly. Use proper mathematical notation where appropriate.',
-  code: 'This is a programming question. Provide clean, well-commented code with language-appropriate syntax highlighting. Explain the approach, time/space complexity, and edge cases.',
-  general: 'This is a general academic question. Provide a clear, comprehensive explanation with relevant examples, concepts, and applications.',
+  math: 'Solve step by step. Show the calculation clearly. Use simple notation. Highlight the final answer.',
+  code: 'Write clean, readable code. Add short inline comments only where helpful. Briefly explain the approach in plain words before the code.',
+  general: 'Give a clear, focused answer. Use simple language and a relevant example. Keep it as brief as the question allows.',
 };
 
 export async function POST(req: NextRequest) {

@@ -5,7 +5,6 @@ import { Search, Globe, ExternalLink, Loader2, BookOpen, FileText, Lightbulb, Sp
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 
@@ -75,7 +74,7 @@ export function WebSearchView() {
   ];
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full overflow-hidden">
       {/* Header */}
       <div className="flex items-center gap-3 px-4 py-3 border-b bg-card/50 backdrop-blur-sm shrink-0">
         <div className="w-9 h-9 rounded-xl bg-teal-100 dark:bg-teal-900/40 flex items-center justify-center">
@@ -87,7 +86,7 @@ export function WebSearchView() {
         </div>
       </div>
 
-      <ScrollArea className="flex-1">
+      <div className="flex-1 overflow-y-auto">
         <div className="max-w-3xl mx-auto p-4 space-y-4">
           {/* Search Box */}
           <Card className="border-0 shadow-sm">
@@ -277,7 +276,7 @@ export function WebSearchView() {
             )}
           </AnimatePresence>
         </div>
-      </ScrollArea>
+      </div>
     </div>
   );
 }
