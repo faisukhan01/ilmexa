@@ -771,6 +771,13 @@ function SignupForm({ onToggle, onSuccess }: SignupFormProps) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [suggestGoogle, setSuggestGoogle] = useState(false);
+  // OTP verification step
+  const [pendingToken, setPendingToken] = useState<string | null>(null);
+  const [otp, setOtp] = useState('');
+  const [otpError, setOtpError] = useState('');
+  const [otpLoading, setOtpLoading] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
   const [errors, setErrors] = useState<{
     fullName?: string;
     email?: string;
@@ -823,6 +830,8 @@ function SignupForm({ onToggle, onSuccess }: SignupFormProps) {
 
       if (!res.ok) {
         const msg: string = data.error || 'Signup failed';
+        const isFakeEmail = msg.toLowerCase().includes("doesn't appear to be real") || msg.toLowerCase().includes('continue with google');
+        if (isFakeEmail) setSuggestGoogle(true);
         if (msg.toLowerCase().includes('email') || msg.toLowerCase().includes('account')) {
           setErrors({ email: msg });
         } else if (msg.toLowerCase().includes('password')) {
@@ -833,14 +842,114 @@ function SignupForm({ onToggle, onSuccess }: SignupFormProps) {
         return;
       }
 
-      // Success — session cookie is set by the server
-      onSuccess(data.user?.name || fullName.trim() || undefined);
+      // Server sent OTP — switch to OTP verification step
+      setPendingToken(data.pendingToken);
+      setResendCooldown(60);
     } catch {
       setErrors({ email: 'Network error. Please try again.' });
     } finally {
       setIsLoading(false);
     }
   };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!otp.trim() || otp.length < 6) { setOtpError('Please enter the 6-digit code'); return; }
+    setOtpLoading(true);
+    setOtpError('');
+    try {
+      const res = await fetch('/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pendingToken, otp: otp.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setOtpError(data.error || 'Incorrect code. Please try again.');
+        if (data.error?.includes('expired')) setPendingToken(null);
+        return;
+      }
+      onSuccess(data.user?.name || fullName.trim() || undefined);
+    } catch {
+      setOtpError('Network error. Please try again.');
+    } finally {
+      setOtpLoading(false);
+    }
+  };
+
+  // Countdown timer for resend cooldown
+  React.useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const t = setTimeout(() => setResendCooldown(c => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [resendCooldown]);
+
+  // ── OTP verification screen ──────────────────────────────────────────────────
+  if (pendingToken) {
+    return (
+      <div className="bg-white flex flex-col p-4 sm:p-6 md:p-8 rounded-b-2xl md:rounded-l-2xl md:rounded-br-none md:rounded-tr-none">
+        <div className="flex flex-col items-center mb-4">
+          <div className="w-14 h-14 rounded-2xl bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center mb-3">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          </div>
+          <h2 className="text-lg font-bold text-gray-800 text-center">Check your email</h2>
+          <p className="text-gray-400 text-xs text-center mt-1 leading-snug">
+            We sent a 6-digit code to<br />
+            <span className="font-semibold text-gray-600">{email}</span>
+          </p>
+        </div>
+
+        <form onSubmit={handleVerifyOtp} className="space-y-4">
+          <div>
+            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Verification Code</label>
+            <input
+              type="text"
+              inputMode="numeric"
+              maxLength={6}
+              value={otp}
+              onChange={e => { setOtp(e.target.value.replace(/\D/g, '')); setOtpError(''); }}
+              placeholder="000000"
+              autoFocus
+              className="w-full h-14 rounded-xl border-2 border-gray-200 text-center text-2xl font-bold text-gray-800 tracking-widest outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
+            />
+            {otpError && (
+              <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="text-red-500 text-xs mt-1.5 text-center">
+                {otpError}
+              </motion.p>
+            )}
+          </div>
+
+          <motion.button
+            type="submit"
+            disabled={otpLoading || otp.length < 6}
+            whileTap={{ scale: 0.98 }}
+            className="btn-gradient w-full h-11 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-50"
+          >
+            {otpLoading ? <div className="spinner" /> : 'Verify & Create Account'}
+          </motion.button>
+        </form>
+
+        <div className="mt-4 text-center space-y-2">
+          <p className="text-xs text-gray-400">
+            Didn&apos;t receive it? Check your spam folder.
+          </p>
+          <button
+            type="button"
+            disabled={resendCooldown > 0 || isLoading}
+            onClick={() => { setOtp(''); setOtpError(''); handleSubmit({ preventDefault: () => {} } as React.FormEvent); }}
+            className="text-xs text-emerald-600 hover:text-teal-600 font-semibold disabled:text-gray-400 disabled:cursor-not-allowed transition-colors"
+          >
+            {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : isLoading ? 'Sending…' : 'Resend code'}
+          </button>
+          <div>
+            <button type="button" onClick={() => setPendingToken(null)} className="text-xs text-gray-400 hover:text-gray-600 transition-colors">
+              ← Back to sign up
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white flex flex-col p-4 sm:p-6 md:p-8 rounded-b-2xl md:rounded-l-2xl md:rounded-br-none md:rounded-tr-none">
@@ -851,7 +960,7 @@ function SignupForm({ onToggle, onSuccess }: SignupFormProps) {
       <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-0.5 leading-tight text-center">Create Account</h2>
       <p className="text-gray-400 text-[10px] sm:text-xs mb-3 leading-snug text-center">Join us! Fill in your details to get started</p>
 
-      <form onSubmit={handleSubmit} className="space-y-2">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <FloatingInput
           id="signup-name"
           type="text"
@@ -954,7 +1063,9 @@ function SignupForm({ onToggle, onSuccess }: SignupFormProps) {
         href="/api/auth/google"
         whileHover={{ scale: 1.015, boxShadow: '0 4px 24px 0 rgba(66,133,244,0.13)' }}
         whileTap={{ scale: 0.97 }}
-        className="flex items-center justify-center gap-3 w-full h-11 rounded-xl border-2 border-gray-100 bg-white hover:border-blue-200 hover:bg-blue-50/40 transition-all duration-200 cursor-pointer group"
+        animate={suggestGoogle ? { boxShadow: ['0 0 0 0 rgba(66,133,244,0)', '0 0 0 6px rgba(66,133,244,0.25)', '0 0 0 0 rgba(66,133,244,0)'] } : {}}
+        transition={suggestGoogle ? { duration: 1.2, repeat: Infinity } : {}}
+        className={`flex items-center justify-center gap-3 w-full h-11 rounded-xl border-2 bg-white transition-all duration-200 cursor-pointer group ${suggestGoogle ? 'border-blue-400 bg-blue-50' : 'border-gray-100 hover:border-blue-200 hover:bg-blue-50/40'}`}
       >
         <svg width="18" height="18" viewBox="0 0 48 48" className="shrink-0">
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>

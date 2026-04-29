@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 
 const ADMIN_COOKIE = 'ilmexa-admin';
 const ADMIN_SECRET = new TextEncoder().encode(
-  (process.env.JWT_SECRET || 'ilmexa-secret') + '-superadmin'
+  (process.env.JWT_SECRET ?? '') + '-superadmin'
 );
 
 export async function signAdminToken(): Promise<string> {

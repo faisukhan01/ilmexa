@@ -4,7 +4,10 @@ import { signAdminToken, adminCookieOptions } from '@/lib/admin-auth';
 export async function POST(req: NextRequest) {
   try {
     const { password } = await req.json();
-    const adminPassword = process.env.ADMIN_PASSWORD || 'faisalkhan0297';
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    if (!adminPassword) {
+      return NextResponse.json({ error: 'Admin not configured' }, { status: 503 });
+    }
 
     if (!password || password !== adminPassword) {
       return NextResponse.json({ error: 'Invalid password' }, { status: 401 });

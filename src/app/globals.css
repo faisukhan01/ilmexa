@@ -1957,7 +1957,7 @@ a:focus-visible,
 .slide-up-delay-4 { animation-delay: 0.4s; }
 .slide-up-delay-5 { animation-delay: 0.5s; }
 
-.login-input-wrapper { position: relative; }
+.login-input-wrapper { position: relative; padding-top: 10px; }
 
 .login-input {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;

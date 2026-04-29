@@ -39,9 +39,25 @@ function isNonRetryableError(err: unknown): boolean {
   );
 }
 
+// ── Rate-limit cooldown tracker (survives across invocations in same container) ──
+const groqCooldowns = new Map<string, number>();
+const geminiCooldowns = new Map<string, number>();
+const COOLDOWN_MS = 62_000;
+
+function isCoolingDown(map: Map<string, number>, key: string): boolean {
+  const until = map.get(key);
+  if (!until) return false;
+  if (Date.now() >= until) { map.delete(key); return false; }
+  return true;
+}
+
+function setCooldown(map: Map<string, number>, key: string): void {
+  map.set(key, Date.now() + COOLDOWN_MS);
+}
+
 // ── Key pools ─────────────────────────────────────────────────────────────────
 
-function getGroqClients(): Groq[] {
+function getGroqEntries(): Array<{ key: string; client: Groq }> {
   const keys = [
     process.env.GROQ_API_KEY,
     process.env.GROQ_API_KEY_2,
@@ -56,7 +72,11 @@ function getGroqClients(): Groq[] {
     process.env.GROQ_API_KEY_11,
     process.env.GROQ_API_KEY_12,
   ].filter((k): k is string => !!k && !k.startsWith('your_'));
-  return keys.map((k) => new Groq({ apiKey: k }));
+  return keys.map((k) => ({ key: k, client: new Groq({ apiKey: k }) }));
+}
+
+function getGroqClients(): Groq[] {
+  return getGroqEntries().map((e) => e.client);
 }
 
 function getGeminiKeys(): string[] {
@@ -84,6 +104,7 @@ async function geminiChat(
   if (keys.length === 0) return null;
 
   for (const key of keys) {
+    if (isCoolingDown(geminiCooldowns, key)) continue;
     try {
       const { GoogleGenerativeAI } = await import('@google/generative-ai');
       const genAI = new GoogleGenerativeAI(key);
@@ -99,7 +120,12 @@ async function geminiChat(
       const result = await chat.sendMessage(lastMsg.content);
       return result.response.text();
     } catch (err) {
-      console.warn('Gemini chat key failed, trying next...', (err as { status?: number })?.status);
+      if (isRateLimitError(err)) {
+        setCooldown(geminiCooldowns, key);
+        console.warn('Gemini key rate-limited, cooling down for 62s:', key.slice(-6));
+      } else {
+        console.warn('Gemini chat key failed, trying next...', (err as { status?: number })?.status);
+      }
       continue;
     }
   }
@@ -240,12 +266,13 @@ export async function generateChatResponse(
   messages: Array<{ role: string; content: string }>,
   systemInstruction: string
 ): Promise<string> {
-  const groqClients = getGroqClients();
+  const entries = getGroqEntries();
 
-  // 1. Try each Groq key
-  for (const groq of groqClients) {
+  // 1. Try each Groq key — skip keys still in their rate-limit cooldown
+  for (const { key, client } of entries) {
+    if (isCoolingDown(groqCooldowns, key)) continue;
     try {
-      const completion = await groq.chat.completions.create({
+      const completion = await client.chat.completions.create({
         model: 'llama-3.3-70b-versatile',
         messages: [
           { role: 'system', content: systemInstruction },
@@ -259,7 +286,14 @@ export async function generateChatResponse(
       });
       return completion.choices[0]?.message?.content ?? '';
     } catch (err) {
-      console.warn('Groq chat error, trying next...', (err as { status?: number })?.status);
+      if (isRateLimitError(err)) {
+        setCooldown(groqCooldowns, key);
+        console.warn('Groq key rate-limited, cooling down for 62s:', key.slice(-6));
+      } else if (isNonRetryableError(err)) {
+        console.warn('Groq key non-retryable error, skipping:', (err as { status?: number })?.status);
+      } else {
+        console.warn('Groq chat error, trying next...', (err as { status?: number })?.status);
+      }
       continue;
     }
   }

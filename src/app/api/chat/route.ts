@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateChatResponse, generateVisionResponse, generateDocumentAnalysis } from '@/lib/ai';
 
+export const maxDuration = 60;
+
 const BASE_SYSTEM_PROMPT = `You are Ilmexa AI, a friendly AI teacher for university students. Your goal is to make studying easier and understanding faster.
 
 **Response length rule — always follow this:**
